@@ -1,5 +1,6 @@
 # Investment
 
+*   organizing code base
 -   2025-05-19
     -   14:48 - 18:23
         -   new folder structure and names
@@ -10,6 +11,8 @@
         -   fixing/testing chatgpt agent
     -   21:45 - 00:17
         -   documenting code base functionality
+        
+*   tdd tool subproject
 -   2025-05-21
     -   13:15 - 14:25
         -   tdd pipe
@@ -22,7 +25,13 @@
 -   2025-05-22
     -   10:44 - 11:23
         - organized functions into tool set
-    -   13:54 - 
+    -   13:54 - 15:20
         - generate __init__.py in folder
         - validating syntax of python code
-        - runing code
+    -   16:10 - 21:00
+        - prompt for correcting syntax errors
+        - ajust prompts to be tdd
+        - code_generation_phase and tests_phase
+        - test current tdd pipe
+        - fixed bug with folders and __init__.py
+        - hit a bug with imports

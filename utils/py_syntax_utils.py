@@ -1,6 +1,6 @@
 import ast
 from pathlib import Path
-from typing import Dict, List, TypedDict, Union
+from typing import Dict, List, Optional, TypedDict, Union
 
 
 class IssueDict(TypedDict):
@@ -36,6 +36,29 @@ def print_results(results: ValidationResults) -> None:
         print(f"Total issues found: {len(issues)}")
 
 
+def validation_results_to_str(results: ValidationResults) -> str:
+    if not results:
+        return "No issues found!"
+
+    lines: List[str] = []
+    for file_path, issues in results.items():
+        if file_path == "error":
+            for error in issues:
+                lines.append(f"\nERROR: {error['message']}")
+            continue
+
+        lines.append(f"\nFile: {file_path}")
+        for i, issue in enumerate(issues, 1):
+            lines.append(f"  {i}. {issue['type']}:")
+            lines.append(f"     Line: {issue['line']}")
+            lines.append(f"     {issue['message']}")
+            if issue['detail']:
+                lines.append(f"     {issue['detail']}")
+        lines.append(f"Total issues found: {len(issues)}")
+    
+    return "\n".join(lines)
+
+
 def validate_python_code(path: Union[str, Path], recursive: bool = False) -> ValidationResults:
     path = Path(path)
     results: ValidationResults = {}
@@ -52,6 +75,14 @@ def validate_python_code(path: Union[str, Path], recursive: bool = False) -> Val
             results[str(file)] = issues
 
     return results
+
+
+def has_issues(results: ValidationResults, issue_type: Optional[str] = None) -> bool:
+    for issues in results.values():
+        for issue in issues:
+            if issue_type is None or issue["type"] == issue_type:
+                return True
+    return False
 
 
 def _get_python_files(path: Path, recursive: bool) -> List[Path]:
