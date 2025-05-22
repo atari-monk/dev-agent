@@ -1,0 +1,23 @@
+# Investment
+
+-   2025-05-19
+    -   14:48 - 18:23
+        -   new folder structure and names
+        -   strict typing
+        -   documenting code base functionality
+-   2025-05-20
+    -   14:48 - 16:10
+        -   fixing/testing chatgpt agent
+    -   21:45 - 00:17
+        -   documenting code base functionality
+-   2025-05-21
+    -   13:15 - 14:25
+        -   tdd pipe
+    -   15:08 - 17:45
+        -   testing tdd pipe
+    -   19:15 - 20:15
+        -   testing tdd pipe
+    -   22:00 - 23:50
+        - refactoring
+-   2025-05-22
+    -   10:44 - xx:xx

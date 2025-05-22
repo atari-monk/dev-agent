@@ -1,0 +1,9 @@
+setuptools
+pytest
+pytest-cov
+pyperclip
+ruff
+requests
+selenium
+colorama
+urlparse
