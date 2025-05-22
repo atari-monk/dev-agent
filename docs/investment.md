@@ -20,4 +20,9 @@
     -   22:00 - 23:50
         - refactoring
 -   2025-05-22
-    -   10:44 - xx:xx
+    -   10:44 - 11:23
+        - organized functions into tool set
+    -   13:54 - 
+        - generate __init__.py in folder
+        - validating syntax of python code
+        - runing code

@@ -7,3 +7,5 @@ requests
 selenium
 colorama
 urlparse
+pycodestyle
+black

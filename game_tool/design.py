@@ -7,6 +7,7 @@ from game_tool.prompts.generate_test_task import generate_test_task
 from game_tool.prompts.generate_unit_test import generate_unit_test
 from game_tool.prompts.generate_empty_class import generate_empty_class
 from game_tool.prompts.generate_interface import generate_interface
+from utils.files import ensure_init_py_in_parents
 
 project = Project(
     project_name="Race Track Game",
@@ -29,6 +30,7 @@ for element in elements:
 
 for task in tasks:
     task.file_path.parent.mkdir(parents=True, exist_ok=True)
+    ensure_init_py_in_parents(task.file_path)
 
 def getTasks():
     return tasks
