@@ -8,6 +8,7 @@ class Task(BaseModel):
     description_template: str
     file_path: Path
     assumptions: List[str]
+    skipValidation: bool = False
 
     @property
     def description(self) -> str:

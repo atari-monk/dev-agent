@@ -11,11 +11,13 @@ def generate_empty_class(base_path: Path, file_name: str, feature_description: s
         file_path=base_path / file_name / f"{file_name}.py",
         assumptions=get_standard_assumptions(
             additional=[
-                "output only class code", 
-                "functions empty with pass",
+                f"class name: {snake_to_camel(file_name)}",
                 "implement the interface",
-                "assume class and interface are in the same directory",
-                f"import interface: from {file_name}.{file_name}_interface.py import I{snake_to_camel(file_name)}",
-                f"class name: {snake_to_camel(file_name)}"
+                "empty functions must raise NotImplementedError",
+                "import interface: ",
+                f"from {file_name}.{file_name}_interface.py import I{snake_to_camel(file_name)}",
+                "implement class in a way that makes test syntax valid",
+                "implement class in a way that makes test fail, as first step of tdd",
+                "output only class code", 
                 ]),
     )

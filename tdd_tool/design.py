@@ -23,8 +23,8 @@ code_generation: List[Task] = []
 
 for element in elements:
     code_generation.append(generate_interface(project.repo_path, element.snake_case_name, element.description_with_requirements)) 
-    code_generation.append(generate_empty_class(project.repo_path, element.snake_case_name, element.description_with_requirements))
     code_generation.append(generate_unit_test(project.repo_path, element.snake_case_name, element.description_with_requirements))
+    code_generation.append(generate_empty_class(project.repo_path, element.snake_case_name, element.description_with_requirements))
 
     element_path = project.repo_path / element.snake_case_name
     element_path.mkdir(parents=True, exist_ok=True)

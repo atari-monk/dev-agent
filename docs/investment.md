@@ -39,7 +39,9 @@
     - 07:00 - 08:12
         - fix imports bug in class
         - names of class and interface
-    - xx:xx - xx:xx
+    - 08:54 - 10:21
         - import in test
         - implement test so syntax is correct
         - introduce cap to 2 trays on syntax and types repairs
+        - reached failing tests as first step of tdd
+        - abandoning project as to complex, code stays as warning lesson
