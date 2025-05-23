@@ -81,3 +81,15 @@
         -   save_code
 -   CodeBaseAgent
     -   agent with ability to process path with py code and produce metadata about it
+
+## TDD Tool
+
+-   tdd_pipe
+    - script to simulate tdd process with chatgpt
+    - implementing interface, unit test for feature, empty implementation
+    - checks syntax and typing up to 2 times
+    - runs tests to fail all of them as first step of tdd
+    - failed subproject
+    - to complex
+    - to little gain! relative to efort
+    - planning is needed and much modest time and features needed to be planned to reach implementations that are gaining something much faster and in managable increments of 1 hr 
