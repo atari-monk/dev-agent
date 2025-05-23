@@ -35,3 +35,11 @@
         - test current tdd pipe
         - fixed bug with folders and __init__.py
         - hit a bug with imports
+-   2025-05-23
+    - 07:00 - 08:12
+        - fix imports bug in class
+        - names of class and interface
+    - xx:xx - xx:xx
+        - import in test
+        - implement test so syntax is correct
+        - introduce cap to 2 trays on syntax and types repairs
