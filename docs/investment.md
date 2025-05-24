@@ -45,3 +45,7 @@
         - introduce cap to 2 trays on syntax and types repairs
         - reached failing tests as first step of tdd
         - abandoning project as to complex, code stays as warning lesson
+-   2025-05-24
+    - 14:32 - 15:42
+        - generate code agent
+        - wrapper on chatgpt agent

@@ -93,3 +93,16 @@
     - to complex
     - to little gain! relative to efort
     - planning is needed and much modest time and features needed to be planned to reach implementations that are gaining something much faster and in managable increments of 1 hr 
+
+    TDD Pipe flow: //(part)
+    ```plaintext
+    Element1 //defines what to implement
+    //Interface, Class, UnitTest
+    //1-implementation, 2-syntax validation, 3-strict types validation
+    I1->I2->I3
+    C1->C2->C3
+    T1->T2->T3
+    //run unit tests
+    UT
+    UT_Feedback (all test should fail in tdd initial state)
+    ```
