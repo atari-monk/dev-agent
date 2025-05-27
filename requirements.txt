@@ -1,0 +1,12 @@
+setuptools
+pytest
+pytest-cov
+pyperclip
+ruff
+requests
+selenium
+colorama
+urlparse
+pycodestyle
+black
+pyyaml
