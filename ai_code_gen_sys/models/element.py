@@ -30,15 +30,21 @@ class Element(BaseModel):
         with open(file_path, 'w') as f:
             yaml.dump(self.model_dump(), f, sort_keys=False)
 
-    def element_to_str(self) -> str:
+    def full_description(self) -> str:
         return (
-            f"Element(id={self.id}, name={self.name}, "
-            f"element_type={self.element_type.value}, "
-            f"project_id={self.project_id})"
+            f"id: {self.id}\n"
+            f"project_id: {self.project_id}\n"
+            f"name: {self.name}\n"
+            f"description: {self.description}\n"
+            f"element_type: {self.element_type.value}\n"
+            f"dependencies: {self.dependencies}\n"
+            f"created_at: {self.created_at.isoformat()}\n"
+            f"updated_at: {self.updated_at.isoformat()}\n"
+            f"metadata: {self.metadata}\n"
         )
     
     def __str__(self) -> str:
-        return self.element_to_str()
+        return self.full_description()
     
     __schema__: ClassVar[str] = """
     id: str
@@ -62,9 +68,13 @@ class Element(BaseModel):
         """
     
     def is_valid(self) -> bool:
-        return all([
-            bool(self.id),
-            bool(self.name),
-            bool(self.description),
-            bool(self.project_id)
-        ])
+        try:
+            return all([
+                self.id.strip(),
+                self.project_id.strip(),
+                self.name.strip(),
+                self.description.strip(),
+                self.created_at <= self.updated_at,
+            ])
+        except Exception:
+            return False

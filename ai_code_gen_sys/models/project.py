@@ -67,8 +67,12 @@ class Project(BaseModel):
         """
 
     def is_valid(self) -> bool:
-        return all([
-            bool(self.id),
-            bool(self.name),
-            bool(self.description)
-        ])
+        try:
+            return all([
+                self.id.strip(),
+                self.name.strip(),
+                self.description.strip(),
+                self.created_at <= self.updated_at,
+            ])
+        except Exception:
+            return False

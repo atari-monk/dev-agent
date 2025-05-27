@@ -1,6 +1,9 @@
-from typing import List, Optional, Dict, Any
+from pathlib import Path
+from typing import ClassVar, List, Optional, Dict, Any, cast
 from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
+
+import yaml
 from ai_code_gen_sys.models.task_status import TaskStatus
 from ai_code_gen_sys.models.code_language import CodeLanguage
 
@@ -22,3 +25,77 @@ class Task(BaseModel):
     def update_status(self, new_status: TaskStatus):
         self.status = new_status
         self.updated_at = datetime.now()
+
+    def mark_in_progress(self):
+        self.update_status(TaskStatus.IN_PROGRESS)
+
+    def mark_completed(self):
+        self.update_status(TaskStatus.COMPLETED)
+
+    def mark_failed(self):
+        self.update_status(TaskStatus.FAILED)
+
+    @classmethod
+    def load(cls, file_path: Path) -> 'Task':
+        with open(file_path, 'r') as f:
+            raw = yaml.safe_load(f)
+            data = cast(Dict[str, Any], raw)
+        return cls(**data)
+
+    def save(self, file_path: Path) -> None:
+        with open(file_path, 'w') as f:
+            yaml.dump(self.model_dump(), f, sort_keys=False)
+    
+    def full_description(self) -> str:
+        return (
+            f"id: {self.id}\n"
+            f"element_id: {self.element_id}\n"
+            f"title: {self.title}\n"
+            f"prompt: {self.prompt}\n"
+            f"status: {self.status.value}\n"
+            f"code_language: {self.code_language.value}\n"
+            f"generated_code: {self.generated_code}\n"
+            f"dependencies: {self.dependencies}\n"
+            f"created_at: {self.created_at.isoformat()}\n"
+            f"updated_at: {self.updated_at.isoformat()}\n"
+            f"metadata: {self.metadata}\n"
+        )
+    
+    def __str__(self) -> str:
+        return self.full_description()
+    
+    __schema__: ClassVar[str] = """
+    id: str
+    element_id: str
+    title: str
+    prompt: str
+    status: TaskStatus
+    generated_code: Optional[str]
+    code_language: CodeLanguage
+    dependencies: List[str]
+    created_at: datetime
+    updated_at: datetime
+    metadata: Dict[str, Any]
+    """
+
+    @classmethod
+    def to_prompt(cls) -> str:
+        return f"""
+        Task Schema:
+        {cls.__schema__}
+        Defaults:
+        status: (pending)
+        code_language: (python)
+        """
+    
+    def is_valid(self) -> bool:
+        try:
+            return all([
+                self.id.strip(),
+                self.element_id.strip(),
+                self.title.strip(),
+                self.prompt.strip(),
+                self.created_at <= self.updated_at,
+            ])
+        except Exception:
+            return False
