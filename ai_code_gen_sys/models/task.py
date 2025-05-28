@@ -14,7 +14,7 @@ class Task(BaseModel):
     element_id: str = Field(..., description="ID of the parent element")
     title: str = Field(..., max_length=100, description="Short description of the task")
     prompt: str = Field(..., description="Detailed prompt for AI code generation")
-    status: TaskStatus = Field(default=TaskStatus.PENDING, description="Current status of the task")
+    status: TaskStatus = Field(default=TaskStatus.NOT_IMPLEMENTED, description="Current status of the task")
     generated_code: Optional[str] = Field(None, description="AI-generated code for this task")
     code_language: CodeLanguage = Field(default=CodeLanguage.PYTHON, description="Programming language for this task")
     dependencies: List[str] = Field(default_factory=list, description="List of task IDs this task depends on")
@@ -25,15 +25,6 @@ class Task(BaseModel):
     def update_status(self, new_status: TaskStatus):
         self.status = new_status
         self.updated_at = datetime.now()
-
-    def mark_in_progress(self):
-        self.update_status(TaskStatus.IN_PROGRESS)
-
-    def mark_completed(self):
-        self.update_status(TaskStatus.COMPLETED)
-
-    def mark_failed(self):
-        self.update_status(TaskStatus.FAILED)
 
     @classmethod
     def load(cls, file_path: Path) -> 'Task':
@@ -46,6 +37,14 @@ class Task(BaseModel):
         with open(file_path, 'w') as f:
             yaml.dump(self.model_dump(), f, sort_keys=False)
     
+    def update_task(self, file_path: Path, update_data: Dict[str, Any]) -> None:
+        task = Task.load(file_path)
+        for field, value in update_data.items():
+            if field in task.model_fields:
+                setattr(task, field, value)
+        task.updated_at = datetime.now()
+        task.save(file_path)
+
     def full_description(self) -> str:
         return (
             f"id: {self.id}\n"

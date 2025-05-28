@@ -1,20 +1,21 @@
 # Investment
 
-*   organizing code base
 -   2025-05-19
     -   14:48 - 18:23
+        -   organizing code base
         -   new folder structure and names
         -   strict typing
         -   documenting code base functionality
+
 -   2025-05-20
     -   14:48 - 16:10
         -   fixing/testing chatgpt agent
     -   21:45 - 00:17
         -   documenting code base functionality
-        
-*   tdd tool subproject
+
 -   2025-05-21
     -   13:15 - 14:25
+        -   tdd tool subproject
         -   tdd pipe
     -   15:08 - 17:45
         -   testing tdd pipe
@@ -22,6 +23,7 @@
         -   testing tdd pipe
     -   22:00 - 23:50
         - refactoring
+
 -   2025-05-22
     -   10:44 - 11:23
         - organized functions into tool set
@@ -35,6 +37,7 @@
         - test current tdd pipe
         - fixed bug with folders and __init__.py
         - hit a bug with imports
+
 -   2025-05-23
     - 07:00 - 08:12
         - fix imports bug in class
@@ -45,6 +48,7 @@
         - introduce cap to 2 trays on syntax and types repairs
         - reached failing tests as first step of tdd
         - abandoning project as to complex, code stays as warning lesson
+
 -   2025-05-24
     - 14:32 - 15:42
         - generate code agent
@@ -54,10 +58,12 @@
     - 22:59 - 00:37
         - implement multi agent tool
         - fail, again to big chuncks taken
+
 - 2025-05-25
     - 17:53 - 20:07
         - project_agent
         - data model, agent, smoke test
+
 - 2025-05-26
     - 11:20 - 12:57
         - element_agent
@@ -72,6 +78,7 @@
         - project data model, load, save, scheme, print to str method
     - 22:42 - 23:36
         - project_agent, smoke
+
 - 2025-05-27
     - 14:40 - 15:02
         - script to hold attention
