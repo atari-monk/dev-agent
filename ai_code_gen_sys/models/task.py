@@ -33,10 +33,26 @@ class Task(BaseModel):
             data = cast(Dict[str, Any], raw)
         return cls(**data)
 
+    @classmethod
+    def load_many(cls, file_path: Path) -> List['Task']:
+        with open(file_path, 'r') as f:
+            raw = yaml.safe_load(f)
+            if raw is None:
+                return []
+            if isinstance(raw, dict):
+                task_data: Dict[str, Any] = cast(Dict[str, Any], raw)
+                return [cls(**task_data)]
+            return [cls(**cast(Dict[str, Any], task_data)) for task_data in raw]
+
     def save(self, file_path: Path) -> None:
         with open(file_path, 'w') as f:
-            yaml.dump(self.model_dump(), f, sort_keys=False)
+            yaml.dump(self.model_dump(mode='json'), f, sort_keys=False)
     
+    @classmethod
+    def save_many(cls, file_path: Path, tasks: List['Task']) -> None:
+        with open(file_path, 'w') as f:
+            yaml.dump([task.model_dump(mode='json') for task in tasks], f, sort_keys=False)
+
     def update_task(self, file_path: Path, update_data: Dict[str, Any]) -> None:
         task = Task.load(file_path)
         for field, value in update_data.items():
@@ -44,6 +60,25 @@ class Task(BaseModel):
                 setattr(task, field, value)
         task.updated_at = datetime.now()
         task.save(file_path)
+
+    @classmethod
+    def update_task_in_file(cls, file_path: Path, task_id: str, update_data: Dict[str, Any]) -> None:
+        tasks = cls.load_many(file_path)
+        updated = False
+        
+        for task in tasks:
+            if task.id == task_id:
+                for field, value in update_data.items():
+                    if field in task.model_fields:
+                        setattr(task, field, value)
+                task.updated_at = datetime.now()
+                updated = True
+                break
+        
+        if not updated:
+            raise ValueError(f"Task with id {task_id} not found in file")
+        
+        cls.save_many(file_path, tasks)
 
     def full_description(self) -> str:
         return (

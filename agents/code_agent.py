@@ -5,21 +5,18 @@ from agents.code_task import CodeTask
 
 
 class CodeAgent:
-    def __init__(self, persist_session: bool = False):
+    def __init__(self):
         self._agent = ChatGPTAgent()
-        self._persist = persist_session
 
-    def execute(self, task: CodeTask) -> None:
+    def execute(self, task: CodeTask) -> str | None:
         self._agent.send_prompt(task.prompt, task.delay_seconds)
-        self._agent.save_code(task.output_path, json=task.json_output)
-        if not self._persist:
-            self._agent.close()
+        return self._agent.save_code(task.output_path, json=task.json_output, overwrite=task.overwrite)
 
-    def batch_execute(self, tasks: List[CodeTask]) -> None:
+    def batch_execute(self, tasks: List[CodeTask]) -> List[Optional[str]]:
+        result: List[Optional[str]] = []
         for task in tasks:
-            self.execute(task)
-        if self._persist:
-            self._agent.close()
+            result.append(self.execute(task))
+        return result
 
     def close(self) -> None:
         self._agent.close()

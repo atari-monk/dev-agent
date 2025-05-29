@@ -3,7 +3,7 @@ from ai_code_gen_sys.agents.project_agent import ProjectAgent
 
 
 def project_agent_smoke_test():
-    agent = ProjectAgent(persist_session=False)
+    agent = ProjectAgent()
     agent.execute(Path(r"C:\atari-monk\code\race-track-game"), 
         "Create racing game with Pygame featuring: "
         "2D graphics, player car, AI opponents, "

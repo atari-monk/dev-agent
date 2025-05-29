@@ -63,7 +63,7 @@ def save_response(driver: webdriver.Chrome, output_file_path: Path=Path("respons
         return None
 
 
-def save_code_block(driver: webdriver.Chrome, output_file_path: Path, wait_time:int=60, json:bool=False):
+def save_code_block(driver: webdriver.Chrome, output_file_path: Path, wait_time:int=60, json:bool=False, overwrite:bool=False):
     try:
         copy_button_xpath = "(//button[contains(., 'Kopiuj')])[last()]"
         copy_button = WebDriverWait(driver, wait_time).until(
@@ -82,7 +82,8 @@ def save_code_block(driver: webdriver.Chrome, output_file_path: Path, wait_time:
                 convert_paths_to_json_safe(response), output_file_path
             )
         else:
-            with open(output_file_path, "a", encoding="utf-8") as f:
+            mode = "w" if overwrite else "a"
+            with open(output_file_path, mode, encoding="utf-8") as f:
                 f.write(response + "\n\n")
 
         return response

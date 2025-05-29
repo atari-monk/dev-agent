@@ -6,8 +6,8 @@ from ai_code_gen_sys.models.element import Element
 
 
 class ElementAgent:
-    def __init__(self, persist_session: bool = False):
-        self._agent = CodeAgent(persist_session=persist_session)
+    def __init__(self):
+        self._agent = CodeAgent()
 
     def execute(self, base_path: Path) -> None:
         project_path = base_path / "docs" / "ai_code_gen_sys" / "project.yaml"

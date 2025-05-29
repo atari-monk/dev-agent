@@ -3,7 +3,7 @@ from ai_code_gen_sys.agents.element_agent import ElementAgent
 
 
 def element_agent_smoke_test():
-    agent = ElementAgent(persist_session=False)
+    agent = ElementAgent()
     agent.execute(Path(r"C:\atari-monk\code\race-track-game"))
 
 

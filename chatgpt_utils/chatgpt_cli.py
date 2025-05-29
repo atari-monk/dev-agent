@@ -30,12 +30,13 @@ def send_chatgpt_prompt(driver: webdriver.Chrome, prompt: str, delay_seconds: in
 
 
 def save_chatgpt_code_block(
-    driver: webdriver.Chrome, output_file_path: Path, delay_seconds: int, json: bool = False, printResponse:bool=False
+    driver: webdriver.Chrome, output_file_path: Path, delay_seconds: int, json: bool = False, printResponse:bool=False, overwrite:bool=False
 ):
     message = f"Saving Response... ({delay_seconds} second delay)\n"
     color_print(message, Fore.RED, style=Style.BRIGHT)
-    response = save_code_block(driver, output_file_path, wait_time=60, json=json)
+    response = save_code_block(driver, output_file_path, wait_time=60, json=json, overwrite=overwrite)
     if printResponse:
         print("Response:")
         print(response)
     time.sleep(delay_seconds)
+    return response

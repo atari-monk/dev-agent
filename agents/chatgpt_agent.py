@@ -30,7 +30,7 @@ class ChatGPTAgent:
             raise Exception("ChatGPT session is not open.")
         send_chatgpt_prompt(self.driver, prompt, delay_seconds)
 
-    def save_code(self, output_file_path: Path, delay_seconds:int=1, json: bool = False):
+    def save_code(self, output_file_path: Path, delay_seconds:int=1, json: bool = False, overwrite:bool=False):
         if self.driver is None:
             raise Exception("ChatGPT session is not open.")
-        save_chatgpt_code_block(self.driver, output_file_path, delay_seconds, json=json)
+        return save_chatgpt_code_block(self.driver, output_file_path, delay_seconds, json=json, overwrite=overwrite)
