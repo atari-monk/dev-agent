@@ -57,7 +57,7 @@ class Project(BaseModel):
     """
 
     @classmethod
-    def prompt(cls, status: ProjectStatus = ProjectStatus.DRAFT, language: CodeLanguage = CodeLanguage.PYTHON) -> str:
+    def format(cls, status: ProjectStatus = ProjectStatus.DRAFT, language: CodeLanguage = CodeLanguage.PYTHON) -> str:
         return f"""
         Project Schema:
         {cls.__schema__}
