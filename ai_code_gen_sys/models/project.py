@@ -30,6 +30,15 @@ class Project(BaseModel):
         with open(file_path, 'w') as f:
             yaml.dump(self.model_dump(), f, sort_keys=False)
 
+    def format_metadata(self, indent: int = 2) -> str:
+        if not self.metadata:
+            return "{}"
+        yaml_str = yaml.dump(self.metadata, 
+            sort_keys=False, 
+            default_flow_style=False,
+            indent=indent)
+        return yaml_str.strip()
+
     def full_description(self) -> str:
         return (
             f"id: {self.id}\n"
@@ -38,7 +47,7 @@ class Project(BaseModel):
             f"status: {self.status.value}\n"
             f"created_at: {self.created_at.isoformat()}\n"
             f"updated_at: {self.updated_at.isoformat()}\n"
-            f"metadata: {self.metadata}\n"
+            f"metadata: \n{self.format_metadata()}\n"
             f"default_language: {self.default_language.value}\n"
         )
 
@@ -46,25 +55,22 @@ class Project(BaseModel):
         return self.full_description()
     
     __schema__: ClassVar[str] = """
-    id: str
-    name: str
-    description: str
-    status: ProjectStatus
-    created_at: datetime
-    updated_at: datetime
-    metadata: Dict[str, Any]
-    default_language: CodeLanguage
-    """
+id: str
+name: str
+description: str
+status: ProjectStatus
+created_at: datetime
+updated_at: datetime
+metadata: Dict[str, Any]
+default_language: CodeLanguage
+"""
 
     @classmethod
     def format(cls, status: ProjectStatus = ProjectStatus.DRAFT, language: CodeLanguage = CodeLanguage.PYTHON) -> str:
-        return f"""
-        Project Schema:
-        {cls.__schema__}
-        Defaults:
-        status: {status.value}
-        default_language: {language.value}
-        """
+        return f"""{cls.__schema__}Defaults:
+status: {status.value}
+default_language: {language.value}
+"""
 
     def is_valid(self) -> bool:
         try:

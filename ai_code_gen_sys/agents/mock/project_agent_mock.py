@@ -5,19 +5,12 @@ from ai_code_gen_sys.agents.interface.iproject_agent import IProjectAgent
 from ai_code_gen_sys.models.project import Project
 
 
-class ProjectAgent(IProjectAgent):
+class ProjectAgentMock(IProjectAgent):
     def __init__(self, code_agent: ICodeAgent):
         self._agent = code_agent
 
     def execute(self, base_path: Path, game_description: str) -> None:
         project_path = base_path / "docs" / "ai_code_gen_sys" / "project.yaml"
-        
-        if project_path.exists():
-            project = Project.load(project_path)
-            if project.is_valid():
-                print(f"Project already exists: \n\n{project.__str__()}")
-                print("Skipping project creation.")
-                return
                         
         task = CodeTask(
             prompt=self.get_prompt(game_description),
@@ -29,7 +22,7 @@ class ProjectAgent(IProjectAgent):
     def get_prompt(self, game_description:str) -> str:
         return f"""You are a project agent that creates a project file for the AI Code Generation System.
 For a game: {game_description}
-Generate Project YAML file: {Project.format()}Requirements:
+Generate a YAML file with schema: {Project.format()}Requirements:
 - Use metadata to store the game requirements, which define playable game mechanic MVP (Minimum Viable Product).
 - Dont use comments in the yaml.
 - Write only the yaml."""

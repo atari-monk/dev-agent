@@ -1,4 +1,5 @@
 from pathlib import Path
+from agents.chatgpt_agent import ChatGPTAgent
 from agents.code_agent import CodeAgent
 from agents.code_task import CodeTask
 
@@ -11,14 +12,14 @@ def code_agent_smoke_test():
         json_output=False,
     )
 
-    agent = CodeAgent(persist_session=False)
+    agent = CodeAgent(ChatGPTAgent())
     try:
         agent.execute(task)
         print("execute() without persistence passed")
     except Exception as e:
         print(f"execute() without persistence failed: {e}")
 
-    agent = CodeAgent(persist_session=True)
+    agent = CodeAgent(ChatGPTAgent())
     try:
         agent.batch_execute([task, task])
         print("batch_execute() with persistence passed")
@@ -28,7 +29,7 @@ def code_agent_smoke_test():
         agent.__exit__(None, None, None)
         
     try:
-        with CodeAgent(persist_session=False) as agent:
+        with CodeAgent(ChatGPTAgent()) as agent:
             agent.execute(task)
         print("context manager usage passed")
     except Exception as e:

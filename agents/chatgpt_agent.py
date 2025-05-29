@@ -1,4 +1,5 @@
 from pathlib import Path
+from agents.interface.ichatgpt_agent import IChatGPTAgent
 from chatgpt_utils.chatgpt_cli import (
     open_chatgpt_session,
     save_chatgpt_code_block,
@@ -6,7 +7,7 @@ from chatgpt_utils.chatgpt_cli import (
 )
 
 
-class ChatGPTAgent:
+class ChatGPTAgent(IChatGPTAgent):
     def __init__(self):
         self.driver = None
         self.open()
@@ -30,7 +31,7 @@ class ChatGPTAgent:
             raise Exception("ChatGPT session is not open.")
         send_chatgpt_prompt(self.driver, prompt, delay_seconds)
 
-    def save_code(self, output_file_path: Path, delay_seconds:int=1, json: bool = False, overwrite:bool=False):
+    def save_code(self, output_file_path: Path, delay_seconds:int=1, json: bool = False, overwrite:bool=False) -> str | None:
         if self.driver is None:
             raise Exception("ChatGPT session is not open.")
         return save_chatgpt_code_block(self.driver, output_file_path, delay_seconds, json=json, overwrite=overwrite)
