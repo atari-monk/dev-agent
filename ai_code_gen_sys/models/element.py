@@ -47,26 +47,37 @@ class Element(BaseModel):
         return self.full_description()
     
     __schema__: ClassVar[str] = """
-    id: str
-    project_id: str
-    name: str
-    description: str
-    element_type: ElementType
-    dependencies: List[str]
-    created_at: datetime
-    updated_at: datetime
-    metadata: Dict[str, Any]
-    """
+id: str
+project_id: str
+name: str
+description: str
+element_type: ElementType
+dependencies: List[str]
+created_at: datetime
+updated_at: datetime
+metadata: Dict[str, Any]
+"""
     
     @classmethod
-    def prompt(cls) -> str:
+    def format(cls) -> str:
         return f"""
-        Element Schema:
-        {cls.__schema__}
-        Defaults:
-        element_type: (module, class, function, component, api_endpoint, database_model, configuration, test)
-        """
-    
+Element Schema:
+{cls.__schema__}
+
+Defaults:
+element_type: (module, class, function, component, api_endpoint, database_model, configuration, test)
+
+Key Relationships:
+- Components depend on interfaces
+- Systems depend on utility modules
+- Tests match component naming
+
+Metadata Standards:
+- is_interface: Marks abstraction contracts
+- test_coverage: Guides test generation
+- task_hints: Suggested implementation steps
+""" 
+
     def is_valid(self) -> bool:
         try:
             return all([

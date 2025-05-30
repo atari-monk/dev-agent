@@ -56,7 +56,7 @@ class Task(BaseModel):
     def update_task(self, file_path: Path, update_data: Dict[str, Any]) -> None:
         task = Task.load(file_path)
         for field, value in update_data.items():
-            if field in task.model_fields:
+            if field in Task.model_fields:
                 setattr(task, field, value)
         task.updated_at = datetime.now()
         task.save(file_path)
@@ -69,7 +69,7 @@ class Task(BaseModel):
         for task in tasks:
             if task.id == task_id:
                 for field, value in update_data.items():
-                    if field in task.model_fields:
+                    if field in Task.model_fields:
                         setattr(task, field, value)
                 task.updated_at = datetime.now()
                 updated = True
@@ -113,15 +113,27 @@ class Task(BaseModel):
     """
 
     @classmethod
-    def to_prompt(cls) -> str:
+    def format(cls) -> str:
         return f"""
-        Task Schema:
-        {cls.__schema__}
-        Defaults:
-        status: (pending)
-        code_language: (python)
-        """
-    
+Task Schema:
+{cls.__schema__}
+
+Defaults:
+status: (pending)
+code_language: (python)
+
+Required Metadata Fields:
+- complexity: (low|medium|high)
+- estimated_steps: (integer)
+- requires_review: (true|false)
+
+Common Task Types:
+1. Implementation (prefix with 'implement_')
+2. Testing (prefix with 'test_')
+3. Interface Definition (prefix with 'define_')
+4. Integration (prefix with 'integrate_')
+"""
+
     def is_valid(self) -> bool:
         try:
             return all([

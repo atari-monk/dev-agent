@@ -6,30 +6,72 @@ from ai_code_gen_sys.models.project import Project
 
 
 class ProjectAgent(IProjectAgent):
-    def __init__(self, code_agent: ICodeAgent):
+    def __init__(self, base_path: Path, code_agent: ICodeAgent):
+        self.project_path = base_path / "docs" / "ai_code_gen_sys" / "project.yaml"
         self._agent = code_agent
 
-    def execute(self, base_path: Path, game_description: str) -> None:
-        project_path = base_path / "docs" / "ai_code_gen_sys" / "project.yaml"
-        
-        if project_path.exists():
-            project = Project.load(project_path)
-            if project.is_valid():
-                print(f"Project already exists: \n\n{project.__str__()}")
-                print("Skipping project creation.")
-                return
-                        
+    def execute(self, game_description: str) -> None:
+        if self.project_path.exists():
+            print("Project already exists. Skipping generation.")
+            return
+        if not Project.load(self.project_path).is_valid():
+            print("Project is not valid. Skipping generation.")
+            return
+        self.run_code_agent(game_description)
+
+    def run_code_agent(self, game_description: str) -> None:
         task = CodeTask(
             prompt=self.get_prompt(game_description),
-            output_path=project_path
+            output_path=self.project_path
         )
         self._agent.execute(task)
         self._agent.close()
 
-    def get_prompt(self, game_description:str) -> str:
-        return f"""You are a project agent that creates a project file for the AI Code Generation System.
-For a game: {game_description}
-Generate Project YAML file: {Project.format()}Requirements:
-- Use metadata to store the game requirements, which define playable game mechanic MVP (Minimum Viable Product).
-- Dont use comments in the yaml.
-- Write only the yaml."""
+    def get_prompt(self, game_description: str) -> str:
+        return f"""
+You are a Project Architect Agent. Convert this game description into a structured project blueprint that will be processed by the System Designer Agent.
+
+# Game Description
+{game_description}
+
+# Full Schema
+{Project.format()}
+
+# Output Rules
+1. This YAML will be DIRECTLY CONSUMED by the System Designer Agent to generate technical components
+2. Format: Strict YAML (no comments, no Markdown, no trailing commas)
+3. Required Fields:
+   - id: lowercase_snake_case (e.g. "pygame_racer")
+   - name: Title Case (max 100 chars)
+   - description: 1-3 sentences summarizing core gameplay (used for component generation)
+   - status: Always "draft"
+   - metadata: Must contain these System Designer-critical subfields:
+     mvp_requirements: List of playable game mechanics (will become components/elements)
+     technical_constraints: List of key tech limits (guides implementation approach)
+     assets_required: List of needed resources (will create asset loader components)
+   - default_language: Always "python"
+
+# System Designer Agent Requirements
+- Metadata must be machine-parsable for component generation
+- mvp_requirements should map 1:1 to major systems (e.g. "Collision system" → PhysicsSystem)
+- Include implied interfaces (e.g. "Lap time tracking" implies ITimer interface)
+
+# Example Output (YAML only):
+id: pygame_racer
+name: Pygame Racer
+description: "2D top-down racing game with AI opponents and lap timing"
+status: draft
+default_language: python
+metadata:
+  mvp_requirements:
+    - Player car with acceleration/steering  # Will become InputSystem
+    - AI opponents with basic pathfinding    # Will become AISystem
+    - Collision system for track boundaries  # Will become PhysicsSystem
+    - Lap time tracking                     # Will become TimingSystem
+  technical_constraints:
+    - Must use Pygame 2.5+                  # Will constrain component implementations
+    - 60 FPS target                         # Will generate performance monitoring
+  assets_required:
+    - Race track sprite                     # Will create AssetLoader component
+    - Vehicle sprites                       # Will create SpriteManager
+"""

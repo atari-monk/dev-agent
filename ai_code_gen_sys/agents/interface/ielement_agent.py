@@ -1,0 +1,8 @@
+from ai_code_gen_sys.models.project import Project
+from typing import Protocol, runtime_checkable
+
+
+@runtime_checkable
+class IElementAgent(Protocol):
+    def execute(self) -> None: ...
+    def get_prompt(self, project: Project) -> str: ...

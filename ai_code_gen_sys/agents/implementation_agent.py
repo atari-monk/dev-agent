@@ -1,13 +1,13 @@
 from pathlib import Path
 from typing import Dict, Any, List
-from agents.code_agent import CodeAgent
 from agents.code_task import CodeTask
+from agents.interface.icode_agent import ICodeAgent
 from ai_code_gen_sys.models.task import Task
 from ai_code_gen_sys.models.task_status import TaskStatus
 
 class ImplementationAgent:
-    def __init__(self) -> None:
-        self._code_agent = CodeAgent()
+    def __init__(self, code_agent: ICodeAgent) -> None:
+        self._code_agent = code_agent
 
     def load_tasks(self, tasks_path: Path, element_id: str) -> List[Task]:
         if not tasks_path.exists():

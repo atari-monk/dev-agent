@@ -48,7 +48,7 @@ class Project(BaseModel):
             f"created_at: {self.created_at.isoformat()}\n"
             f"updated_at: {self.updated_at.isoformat()}\n"
             f"metadata: \n{self.format_metadata()}\n"
-            f"default_language: {self.default_language.value}\n"
+            f"default_language: {self.default_language.value}"
         )
 
     def __str__(self) -> str:
@@ -62,8 +62,7 @@ status: ProjectStatus
 created_at: datetime
 updated_at: datetime
 metadata: Dict[str, Any]
-default_language: CodeLanguage
-"""
+default_language: CodeLanguage"""
 
     @classmethod
     def format(cls, status: ProjectStatus = ProjectStatus.DRAFT, language: CodeLanguage = CodeLanguage.PYTHON) -> str:
