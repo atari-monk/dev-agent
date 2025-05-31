@@ -11,15 +11,6 @@ class ProjectAgent(IProjectAgent):
         self._agent = code_agent
 
     def execute(self, game_description: str) -> None:
-        if self.project_path.exists():
-            print("Project already exists. Skipping generation.")
-            return
-        if not Project.load(self.project_path).is_valid():
-            print("Project is not valid. Skipping generation.")
-            return
-        self.run_code_agent(game_description)
-
-    def run_code_agent(self, game_description: str) -> None:
         task = CodeTask(
             prompt=self.get_prompt(game_description),
             output_path=self.project_path

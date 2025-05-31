@@ -6,24 +6,12 @@ from ai_code_gen_sys.models.project import Project
 from ai_code_gen_sys.models.element import Element
 from pathlib import Path
 
-
 class ElementAgent(IElementAgent):
     def __init__(self, base_path: Path, code_agent: ICodeAgent):
-        self.project_path = base_path / "docs" / "ai_code_gen_sys" / "project.yaml"
         self.elements_path = base_path / "docs" / "ai_code_gen_sys" / "elements.yaml"
         self._agent = code_agent
 
-    def execute(self) -> None:
-        if not self.project_path.exists():
-            raise FileNotFoundError("Project file not found")
-            
-        project = Project.load(self.project_path)
-        if not project.is_valid():
-            raise ValueError("Invalid project configuration")
-        
-        self.run_code_agent(project)
-
-    def run_code_agent(self, project: Project) -> None:
+    def execute(self, project:Project) -> None:        
         task = CodeTask(
             prompt=self.get_prompt(project),
             output_path=self.elements_path

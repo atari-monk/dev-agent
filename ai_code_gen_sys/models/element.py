@@ -26,9 +26,25 @@ class Element(BaseModel):
             data = cast(Dict[str, Any], raw)
         return cls(**data)
     
+    @classmethod
+    def load_many(cls, file_path: Path) -> List['Element']:
+        with open(file_path, 'r') as f:
+            raw = yaml.safe_load(f)
+            if raw is None:
+                return []
+            if isinstance(raw, dict):
+                data: Dict[str, Any] = cast(Dict[str, Any], raw)
+                return [cls(**data)]
+            return [cls(**cast(Dict[str, Any], data)) for data in raw]
+        
     def save(self, file_path: Path) -> None:
         with open(file_path, 'w') as f:
             yaml.dump(self.model_dump(), f, sort_keys=False)
+
+    @classmethod
+    def save_many(cls, file_path: Path, elements: List['Element']) -> None:
+        with open(file_path, 'w') as f:
+            yaml.dump([element.model_dump(mode='json') for element in elements], f, sort_keys=False)
 
     def full_description(self) -> str:
         return (

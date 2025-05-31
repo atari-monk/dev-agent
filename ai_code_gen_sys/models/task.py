@@ -40,9 +40,9 @@ class Task(BaseModel):
             if raw is None:
                 return []
             if isinstance(raw, dict):
-                task_data: Dict[str, Any] = cast(Dict[str, Any], raw)
-                return [cls(**task_data)]
-            return [cls(**cast(Dict[str, Any], task_data)) for task_data in raw]
+                data: Dict[str, Any] = cast(Dict[str, Any], raw)
+                return [cls(**data)]
+            return [cls(**cast(Dict[str, Any], data)) for data in raw]
 
     def save(self, file_path: Path) -> None:
         with open(file_path, 'w') as f:

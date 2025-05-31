@@ -1,37 +1,20 @@
 from pathlib import Path
-from typing import List
-import yaml
 from agents.code_task import CodeTask
 from agents.interface.icode_agent import ICodeAgent
+from ai_code_gen_sys.agents.interface.itask_agent import ITaskAgent
 from ai_code_gen_sys.models.task import Task
 from ai_code_gen_sys.models.element import Element
 
-class TaskAgent:
-    def __init__(self, code_agent: ICodeAgent):
+class TaskAgent(ITaskAgent):
+    def __init__(self, base_path: Path, code_agent: ICodeAgent):
+        self.tasks_path = base_path / "docs" / "ai_code_gen_sys" / "tasks.yaml"
         self._agent = code_agent
 
-    def execute(self, base_path: Path, element_id: str) -> None:
-        elements_path = base_path / "docs" / "ai_code_gen_sys" / "elements.yaml"
-        tasks_path = base_path / "docs" / "ai_code_gen_sys" / "tasks.yaml"
-        
-        if not elements_path.exists():
-            raise FileNotFoundError("Elements file not found")
-            
-        with open(elements_path, 'r') as f:
-            elements: List[Element] = [Element(**e) for e in yaml.safe_load(f)]
-        
-        target_element = next((e for e in elements if e.id == element_id), None)
-        if not target_element:
-            raise ValueError(f"Element {element_id} not found")
-        
-        if not target_element.is_valid():
-            raise ValueError(f"Element {element_id} is invalid")
-        
+    def execute(self, element: Element) -> None:
         task = CodeTask(
-            prompt=self.get_prompt(target_element),
-            output_path=tasks_path
+            prompt=self.get_prompt(element),
+            output_path=self.tasks_path
         )
-        
         self._agent.execute(task)
 
     def get_prompt(self, element: Element) -> str:
