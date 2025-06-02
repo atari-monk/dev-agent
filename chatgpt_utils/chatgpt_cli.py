@@ -3,7 +3,7 @@ import time
 from colorama import Fore, Style
 from chatgpt_utils.chatgpt_automation import (
     save_code_block,
-    send_multiline_prompt,
+    send_prompt,
 )
 from chrome_utils.chrome_automation import open_chrome_with_profile
 from utils.colorama_utils import color_print
@@ -25,7 +25,7 @@ def send_chatgpt_prompt(driver: webdriver.Chrome, prompt: str, delay_seconds: in
     color_print(message, Fore.RED, style=Style.BRIGHT)
     if printPrompt:
         print(prompt)
-    send_multiline_prompt(driver, prompt)
+    send_prompt(driver, prompt)
     time.sleep(delay_seconds)
 
 

@@ -11,9 +11,11 @@ from utils.json_utils import (
     convert_paths_to_json_safe,
 )
 from utils.string_utils import clean_code
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 
-
-def send_prompt(driver: webdriver.Chrome, prompt: str, input_area_id: str="prompt-textarea"):
+def send_line_deprecated(driver: webdriver.Chrome, prompt: str, input_area_id: str="prompt-textarea"):
     try:
         input_area = driver.find_element(By.ID, input_area_id)
         input_area.clear()
@@ -26,7 +28,7 @@ def send_prompt(driver: webdriver.Chrome, prompt: str, input_area_id: str="promp
         return False
 
 
-def send_multiline_prompt(driver: webdriver.Chrome, prompt: str, input_area_id: str="prompt-textarea"):
+def send_multiline_deprecated(driver: webdriver.Chrome, prompt: str, input_area_id: str="prompt-textarea"):
     try:
         input_area = driver.find_element(By.ID, input_area_id)
         input_area.clear()
@@ -45,6 +47,27 @@ def send_multiline_prompt(driver: webdriver.Chrome, prompt: str, input_area_id: 
         print(f"Failed to send prompt: {str(e)}")
         return False
 
+def send_prompt(driver: WebDriver, prompt: str, input_area_id: str = "prompt-textarea") -> bool:
+    try:
+        import pyperclip
+        pyperclip.copy(prompt)
+        
+        input_area = driver.find_element(By.ID, input_area_id)
+        input_area.clear()
+
+        input_area.click()
+        
+        if driver.name == 'chrome' or driver.name == 'edge':
+            input_area.send_keys(Keys.CONTROL, 'v')
+        elif driver.name == 'firefox':
+            input_area.send_keys(Keys.COMMAND, 'v')
+        
+        input_area.send_keys(Keys.RETURN)
+        print("Prompt sent successfully")
+        return True
+    except Exception as e:
+        print(f"Failed to send prompt: {str(e)}")
+        return False
 
 def save_response(driver: webdriver.Chrome, output_file_path: Path=Path("response.md"), wait_time:int=60):
     try:
