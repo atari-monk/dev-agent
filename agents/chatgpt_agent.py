@@ -10,7 +10,6 @@ from chatgpt_utils.chatgpt_cli import (
 class ChatGPTAgent(IChatGPTAgent):
     def __init__(self):
         self.driver = None
-        self.open()
 
     def open(self):
         if self.driver is not None:

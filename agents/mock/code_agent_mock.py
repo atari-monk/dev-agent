@@ -19,6 +19,9 @@ class CodeAgentMock(ICodeAgent):
             result.append(self.execute(task))
         return result
 
+    def open(self) -> None:
+        self._agent.open()
+
     def close(self) -> None:
         self._agent.close()
 

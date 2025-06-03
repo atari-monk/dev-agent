@@ -9,6 +9,7 @@ def chatgpt_agent_smoke_test():
     task = f"Write a {function} passing all tests."
 
     c = ChatGPTAgent()
+    c.open()
     c.send_prompt(f"{assumptions} {test}")
     c.save_code(Path("data/fibonacci.test.py"))
 

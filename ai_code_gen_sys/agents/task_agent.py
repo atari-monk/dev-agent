@@ -10,6 +10,12 @@ class TaskAgent(ITaskAgent):
         self.tasks_path = base_path / "docs" / "ai_code_gen_sys" / "tasks.yaml"
         self._agent = code_agent
 
+    def open(self) -> None:
+        self._agent.open()
+
+    def close(self) -> None:
+        self._agent.close()
+        
     def execute(self, element: Element) -> None:
         task = CodeTask(
             prompt=self.get_prompt(element),

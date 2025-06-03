@@ -10,6 +10,12 @@ class ProjectAgent(IProjectAgent):
         self.project_path = base_path / "docs" / "ai_code_gen_sys" / "project.yaml"
         self._agent = code_agent
 
+    def open(self) -> None:
+        self._agent.open()
+
+    def close(self) -> None:
+        self._agent.close()
+        
     def execute(self, game_description: str) -> None:
         task = CodeTask(
             prompt=self.get_prompt(game_description),

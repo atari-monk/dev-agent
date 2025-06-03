@@ -16,14 +16,13 @@ class ImplementationAgent:
 
         for task in tasks:
             implementation_path = base_path / "src" / f"{task.element_id}.py"
-            prompt = self.implement_task(task, implementation_path)
+            prompt = self.get_prompt(task, implementation_path)
 
-            code_task = CodeTask(prompt=prompt, output_path=implementation_path, overwrite=True)
+            code_task = CodeTask(prompt=prompt, output_path=implementation_path, overwrite=False, delay_seconds=30)
             code = self._code_agent.execute(code_task)
             update_data: dict[str, Any] = {"status": TaskStatus.IMPLEMENTED, "generated_code": code}
 
             Task.update_task_in_file(tasks_path, task.id, update_data)
-        self._code_agent.close()
 
     def load_tasks(self, tasks_path: Path, element: Element) -> List[Task]:
         if not tasks_path.exists():
@@ -31,7 +30,7 @@ class ImplementationAgent:
         tasks = Task.load_many(tasks_path)
         return [t for t in tasks if t.element_id == element.id and t.status == TaskStatus.NOT_IMPLEMENTED]
 
-    def implement_task(self, task: Task, output_path: Path) -> str:
+    def get_prompt(self, task: Task, output_path: Path) -> str:
         existing_content = ""
         if output_path.exists():
             with open(output_path, 'r', encoding='utf-8') as f:
@@ -52,3 +51,9 @@ class ImplementationAgent:
         - Output only code
         """
         return prompt
+    
+    def open(self):
+        self._code_agent.open()
+
+    def close(self):
+        self._code_agent.close()

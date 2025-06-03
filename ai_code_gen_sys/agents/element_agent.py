@@ -11,6 +11,12 @@ class ElementAgent(IElementAgent):
         self.elements_path = base_path / "docs" / "ai_code_gen_sys" / "elements.yaml"
         self._agent = code_agent
 
+    def open(self) -> None:
+        self._agent.open()
+
+    def close(self) -> None:
+        self._agent.close()
+
     def execute(self, project:Project) -> None:        
         task = CodeTask(
             prompt=self.get_prompt(project),

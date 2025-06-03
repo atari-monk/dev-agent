@@ -20,7 +20,7 @@ def run_on_elements(base_path: Path, agent: TaskAgent):
             continue
         agent.execute(element)
 
-def getElement(base_path: Path):
+def getElement(base_path: Path) -> List[Element]:
     elements_path = base_path / "docs" / "ai_code_gen_sys" / "elements.yaml"
     if not elements_path.exists():
         raise FileNotFoundError("Elements file not found")
@@ -41,4 +41,4 @@ def main(mock: bool = False) -> None:
         mock_smoke_test(base_path)
 
 if __name__ == "__main__":
-    main()
+    main(True)

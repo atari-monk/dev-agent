@@ -14,6 +14,7 @@ def code_agent_smoke_test():
 
     agent = CodeAgent(ChatGPTAgent())
     try:
+        agent.open()
         agent.execute(task)
         print("execute() without persistence passed")
     except Exception as e:
@@ -21,6 +22,7 @@ def code_agent_smoke_test():
 
     agent = CodeAgent(ChatGPTAgent())
     try:
+        agent.open()
         agent.batch_execute([task, task])
         print("batch_execute() with persistence passed")
     except Exception as e:
@@ -30,6 +32,7 @@ def code_agent_smoke_test():
         
     try:
         with CodeAgent(ChatGPTAgent()) as agent:
+            agent.open()
             agent.execute(task)
         print("context manager usage passed")
     except Exception as e:

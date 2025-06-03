@@ -8,12 +8,16 @@ from ai_code_gen_sys.agents.project_agent import ProjectAgent
 def smoke_test(base_path: Path, game_description:str) -> None:
     print("Running Project Agent smoke test")
     agent =  ProjectAgent(base_path, CodeAgent(ChatGPTAgent()))
+    agent.open()
     agent.execute(game_description)
+    agent.close()
 
 def mock_smoke_test(base_path: Path, game_description:str) -> None:
     print("Running Mocked Project Agent smoke test")
     agent = ProjectAgent(base_path, CodeAgentMock(ChatGPTAgentMock()))
+    agent.open()
     agent.execute(game_description)
+    agent.close()
         
 def main(mock: bool = False) -> None:
     base_path = Path(r"C:\atari-monk\code\race-track-game")
