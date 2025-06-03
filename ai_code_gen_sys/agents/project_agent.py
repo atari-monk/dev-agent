@@ -13,7 +13,8 @@ class ProjectAgent(IProjectAgent):
     def execute(self, game_description: str) -> None:
         task = CodeTask(
             prompt=self.get_prompt(game_description),
-            output_path=self.project_path
+            output_path=self.project_path,
+            delay_seconds=30, overwrite=False
         )
         self._agent.execute(task)
         self._agent.close()

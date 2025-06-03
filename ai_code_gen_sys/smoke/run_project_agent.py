@@ -17,10 +17,6 @@ def mock_smoke_test(base_path: Path, game_description:str) -> None:
         
 def main(mock: bool = False) -> None:
     base_path = Path(r"C:\atari-monk\code\race-track-game")
-    project_path = base_path / "docs" / "ai_code_gen_sys" / "project.yaml"
-    if project_path.exists():
-        print("Project already exists. Skipping generation.")
-        return
     game_description = """Modular 2D Racing Game (Pygame)
 Core Architecture:
 Decoupled Design - Uses Dependency Injection (DI) via interfaces for clean, testable components.

@@ -14,7 +14,9 @@ class ElementAgent(IElementAgent):
     def execute(self, project:Project) -> None:        
         task = CodeTask(
             prompt=self.get_prompt(project),
-            output_path=self.elements_path
+            output_path=self.elements_path,
+            delay_seconds=80,
+            overwrite=False
         )
         self._agent.execute(task)
         self._agent.close()

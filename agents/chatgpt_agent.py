@@ -19,14 +19,14 @@ class ChatGPTAgent(IChatGPTAgent):
             page="https://chat.openai.com/",
             config_Path=r"C:\atari-monk\code\apps-data-store\chrome_profiles.json",
             detach=True,
-            delay_seconds=5)
+            delay_seconds=10)
 
     def close(self):
         if self.driver is not None:
             self.driver.quit()
             self.driver = None
 
-    def send_prompt(self, prompt:str, delay_seconds:int=25):
+    def send_prompt(self, prompt:str, delay_seconds:int=45):
         if self.driver is None:
             raise Exception("ChatGPT session is not open.")
         send_chatgpt_prompt(self.driver, prompt, delay_seconds)

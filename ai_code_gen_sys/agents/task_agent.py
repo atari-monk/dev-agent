@@ -13,7 +13,9 @@ class TaskAgent(ITaskAgent):
     def execute(self, element: Element) -> None:
         task = CodeTask(
             prompt=self.get_prompt(element),
-            output_path=self.tasks_path
+            output_path=self.tasks_path,
+            delay_seconds=40,
+            overwrite=False
         )
         self._agent.execute(task)
 
@@ -27,7 +29,7 @@ You are a Task Planner Agent. Convert this system element into implementable dev
 {Task.format()}
 
 # Output Rules
-1. Format: Strict YAML array (no comments, no Markdown, no trailing commas)
+1. Format: Strict YAML array (no comments, no Markdown, no trailing commas), in yaml code block!!!
 2. Required Fields:
    - id: lowercase_snake_case (e.g. "implement_collision_check")
    - element_id: Must match parent element '{element.id}'
@@ -51,7 +53,9 @@ You are a Task Planner Agent. Convert this system element into implementable dev
 - For interfaces:
   * Generate "Define {{InterfaceName}}" task first
   * Follow with "Implement {{InterfaceName}} for {{Component}}"
-
+- Use pytest in tests
+- In interfaces use Protocol, pure interfaces
+  
 # Example Output (YAML only):
 - id: implement_message_bus
   element_id: message_system

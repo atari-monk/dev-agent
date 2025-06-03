@@ -3,6 +3,7 @@ from enum import Enum
 
 class ElementType(str, Enum):
     MODULE = "module"
+    INTERFACE = "interface"
     CLASS = "class"
     FUNCTION = "function"
     COMPONENT = "component"
