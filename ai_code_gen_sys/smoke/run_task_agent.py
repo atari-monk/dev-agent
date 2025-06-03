@@ -11,7 +11,9 @@ from ai_code_gen_sys.models.element import Element
 def smoke_test(base_path: Path) -> None:
     print("Running Task Agent smoke test")
     agent = TaskAgent(base_path, CodeAgent(ChatGPTAgent()))
+    agent.open()
     run_on_elements(base_path, agent)
+    agent.close()
 
 def run_on_elements(base_path: Path, agent: TaskAgent):
     for element in getElement(base_path):
@@ -41,4 +43,4 @@ def main(mock: bool = False) -> None:
         mock_smoke_test(base_path)
 
 if __name__ == "__main__":
-    main(True)
+    main()

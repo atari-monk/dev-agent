@@ -21,18 +21,15 @@ def mock_smoke_test(base_path: Path, game_description:str) -> None:
         
 def main(mock: bool = False) -> None:
     base_path = Path(r"C:\atari-monk\code\race-track-game")
-    game_description = """Modular 2D Racing Game (Pygame)
-Core Architecture:
-Decoupled Design - Uses Dependency Injection (DI) via interfaces for clean, testable components.
-Event-Driven - Message bus system for modular communication between systems.
-State Machine - Manages game flow (menus, race, pause, etc.) cleanly.
-Component-Based - Easy to extend or modify features without tight coupling.
-SOLID Principles - Emphasizes SRP, DI, and interface-based dependencies.
-Game Features:
-Player Car - Responsive controls with acceleration, braking, and steering.
-AI Opponents - Basic racing behaviors (overtaking, collision avoidance).
-Elliptical Track - Smooth 2D racing with collision detection.
-Lap Timing - Tracks lap times and race progress.
+    game_description = """Goal: Generate a minimal runnable Pygame racing game with:
+A 800x600 black window.
+A player car (red rectangle) controllable with arrow keys (up/down/left/right).
+Basic game loop (60 FPS) with exit-on-close.
+Constraints:
+No track, AI, or collisions yet.
+Use Pygame (pygame.init(), pygame.display.set_mode()).
+Player car must be a class (PlayerCar) with draw() and move() methods.
+Code must run without errors when executed.
 """
     if not mock:
         smoke_test(base_path, game_description)
