@@ -98,8 +98,6 @@ def save_code_block(driver: webdriver.Chrome, output_file_path: Path, wait_time:
 
         response = clean_code(pyperclip.paste())
 
-        print(f"Response: {response}")
-
         if json:
             append_json_strings_to_array(
                 convert_paths_to_json_safe(response), output_file_path

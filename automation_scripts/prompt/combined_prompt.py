@@ -7,6 +7,14 @@ from automation_scripts.prompt.project import generate_project_prompt
 from automation_scripts.prompt.agent import generate_agent_task_prompt, get_first_pending_task
 from automation_scripts.prompt.code_standards import generate_code_standards_prompt
 from automation_scripts.prompt.task import generate_task_prompt
+from dataclasses import dataclass
+
+@dataclass
+class AutomationData:
+    automation: Automation
+    feature: Feature
+    task: Task
+    prompt: str
 
 def generate_combined_prompt(data: Automation, feature: Feature, task: Task) -> str:
     prompt_sections: List[str] = []
@@ -28,16 +36,19 @@ def generate_combined_prompt(data: Automation, feature: Feature, task: Task) -> 
     
     return "\n\n".join(prompt_sections)
 
-def get_active_feature_task():
+def get_active_feature_task() -> AutomationData | None:
     automation = load_automation_from_toml(Path(r"C:\atari-monk\code\race-track-game\docs\automation.toml"))
     feature = get_active_feature(automation.features)
     if not feature:
         print("No active Feature")
-        return
+        return None
     task = get_first_pending_task(automation)
     if not task:
-        return "No pending tasks available"
-    return generate_combined_prompt(automation, feature, task)
+        print("No pending tasks available")
+        return None
+    prompt = generate_combined_prompt(automation, feature, task) 
+    result = AutomationData(automation, feature, task, prompt)
+    return result
 
 def main():
     print(get_active_feature_task())

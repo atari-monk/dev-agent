@@ -6,7 +6,6 @@ from chatgpt_utils.chatgpt_cli import (
     send_chatgpt_prompt,
 )
 
-
 class ChatGPTAgent(IChatGPTAgent):
     def __init__(self):
         self.driver = None

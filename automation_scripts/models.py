@@ -11,7 +11,7 @@ class Task(BaseModel):
     status: str
     assigned_to: str
     requirements: List[str]
-    files: List[str]
+    file: str
     depends_on: Optional[List[str]] = None
 
 class Feature(BaseModel):
