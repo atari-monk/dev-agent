@@ -1,0 +1,9 @@
+__pycache__
+venv
+dev_agent.egg-info
+.pytest_cache
+.coverage
+.ruff_cache
+.mypy_cache
+attention_log.yaml
+stuff_done_log.yaml
