@@ -13,5 +13,5 @@ class RemoveCommand(Command):
 
     @staticmethod
     def handle(args: argparse.Namespace) -> None:
-        FileCRUD.remove(args.feature_name, args.name)
+        FileCRUD.remove(args.feature_name, args.task_name)
         print(f"Removed feature file at {db_config.file}")

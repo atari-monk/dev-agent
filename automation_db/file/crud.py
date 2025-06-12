@@ -67,10 +67,10 @@ class FileCRUD:
         raise ValueError(f"File with feature '{feature_name}' and task '{task_name}' not found")
 
     @staticmethod
-    def update(feature_name: str, name: str, updates: dict[str, Any]) -> File:
+    def update(feature_name: str, task_name: str, updates: dict[str, Any]) -> File:
         data = toml.load(db_config.file.open())
         for file in data['file']:
-            if file['feature'] == feature_name and file['name'] == name:
+            if file['feature'] == feature_name and file['task'] == task_name:
                 for key, value in updates.items():
                     if key in file:
                         file[key] = value
@@ -78,12 +78,12 @@ class FileCRUD:
                     toml.dump(data, f)
                 return File(
                     feature=file['feature'],
-                    task=file['name'],
+                    task=file['task'],
                     file_name=file['file_name'],
                     class_name=file.get('class_name'),
                     path=file['path']
                 )
-        raise ValueError(f"FeatureFile with feature '{feature_name}' and name '{name}' not found")
+        raise ValueError(f"FeatureFile with feature '{feature_name}' and task '{task_name}' not found")
 
     @staticmethod
     def remove(feature_name: str, task_name: str) -> None:

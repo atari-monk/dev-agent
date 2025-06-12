@@ -20,5 +20,5 @@ class UpdateCommand(Command):
         if args.file_name: updates['file_name'] = args.file_name
         if args.class_name: updates['class_name'] = args.class_name
         if args.path: updates['path'] = args.path
-        _ = FileCRUD.update(args.feature_name, args.name, updates)
+        _ = FileCRUD.update(args.feature_name, args.task_name, updates)
         print(f"Updated feature file at {db_config.file}")
