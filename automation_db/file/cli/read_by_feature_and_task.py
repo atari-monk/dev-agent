@@ -4,7 +4,7 @@ from automation_db.cli.command import Command
 from automation_db.file.crud import FileCRUD
 
 @dataclass
-class ReadCommand(Command):
+class ReadByFeatureAndTaskCommand(Command):
     @staticmethod
     def init_parser(parser: argparse.ArgumentParser) -> None:
         parser.add_argument('feature_name', help='Feature name')
@@ -12,7 +12,7 @@ class ReadCommand(Command):
 
     @staticmethod
     def handle(args: argparse.Namespace) -> None:
-        feature_file = FileCRUD.read(args.feature_name, args.name)
+        feature_file = FileCRUD.read_by_feature_and_task(args.feature_name, args.name)
         print("Current feature file:")
         print(f"Feature: {feature_file.feature}")
         print(f"Task: {feature_file.task}")

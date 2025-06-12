@@ -12,5 +12,4 @@ class ReadCommand(Command):
     @staticmethod
     def handle(args: argparse.Namespace) -> None:
         code_style = CodeStyleCRUD.read()
-        print("Current codestyle:")
-        print(f"Requirements: {', '.join(code_style.requirements)}")
+        print(f"\nCode Style: {', '.join(code_style.requirements)}\n")

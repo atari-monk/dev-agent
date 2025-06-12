@@ -25,7 +25,20 @@ class TaskCRUD:
             toml.dump(data, f)
 
     @staticmethod
-    def read(feature: str, name: str) -> Task:
+    def read_all() -> list[Task]:
+        data = toml.load(db_config.task.open())
+        return [
+            Task(
+                feature=task_data['feature'],
+                name=task_data['name'],
+                requirements=task_data['requirements'],
+                assigned_to=task_data['assigned_to'],
+                status=task_data['status'])
+            for task_data in data['task']
+        ]
+    
+    @staticmethod
+    def read_by_feature_and_name(feature: str, name: str) -> Task:
         data = toml.load(db_config.task.open())
         for task_data in data['task']:
             if task_data['feature'] == feature and task_data['name'] == name:
@@ -39,7 +52,7 @@ class TaskCRUD:
         raise ValueError(f"Task with feature '{feature}' and name '{name}' not found")
 
     @staticmethod
-    def read_pending(status: str = 'pending') -> Task | None:
+    def read_by_status(status: str = 'pending') -> Task | None:
         data = toml.load(db_config.task.open())
         for task_data in data['task']:
             if task_data['status'] == status:
@@ -80,14 +93,14 @@ class TaskCRUD:
 
     @staticmethod
     def add_requirement(feature: str, name: str, requirement: str) -> Task:
-        current = TaskCRUD.read(feature, name)
+        current = TaskCRUD.read_by_feature_and_name(feature, name)
         current.requirements.append(requirement)
         updates = {'requirements': current.requirements}
         return TaskCRUD.update(feature, name, updates)
 
     @staticmethod
     def update_requirement(feature: str, name: str, old: str, new: str) -> Task:
-        current = TaskCRUD.read(feature, name)
+        current = TaskCRUD.read_by_feature_and_name(feature, name)
         if old in current.requirements:
             index = current.requirements.index(old)
             current.requirements[index] = new
@@ -96,7 +109,7 @@ class TaskCRUD:
 
     @staticmethod
     def remove_requirement(feature: str, name: str, requirement: str) -> Task:
-        current = TaskCRUD.read(feature, name)
+        current = TaskCRUD.read_by_feature_and_name(feature, name)
         if requirement in current.requirements:
             current.requirements.remove(requirement)
         updates = {'requirements': current.requirements}

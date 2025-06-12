@@ -21,7 +21,17 @@ class FeatureCRUD:
             toml.dump(data, f)
 
     @staticmethod
-    def read(name: str) -> Feature:
+    def read_all() -> list[Feature]:
+        data = toml.load(db_config.feature.open())
+        return [
+            Feature(
+                name=feature_data['name'],
+                requirements=feature_data['requirements'])
+            for feature_data in data['feature']
+        ]
+    
+    @staticmethod
+    def read_by_name(name: str) -> Feature:
         data = toml.load(db_config.feature.open())
         for feature_data in data['feature']:
             if feature_data['name'] == name:

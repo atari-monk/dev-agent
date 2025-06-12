@@ -6,7 +6,18 @@ from automation_db.feature.model import Feature
 from automation_db.file.model import File
 from automation_db.task.model import Task
 
-class PromptGenerator:
+class PromptGenerator:    
+    @staticmethod
+    def get_project_prompt(project: Project) -> str:
+        prompt = [
+            f"Project: {project.name}",
+            "Requirements",
+            *[f"- {req}" for req in project.requirements],
+            "Dependencies",
+            *[f"- {dep}" for dep in project.dependencies]
+        ]
+        return "\n".join(prompt)
+
     @staticmethod
     def get_agent_prompt(agent: Agent) -> str:
         prompt = [
@@ -42,17 +53,6 @@ class PromptGenerator:
         if file.class_name:
             file_prompt.append(f"- class name: {file.class_name}")
         return "\n".join(file_prompt)
-
-    @staticmethod
-    def get_project_prompt(project: Project) -> str:
-        prompt = [
-            f"Project: {project.name}",
-            "Requirements",
-            *[f"- {req}" for req in project.requirements],
-            "Dependencies",
-            *[f"- {dep}" for dep in project.dependencies]
-        ]
-        return "\n".join(prompt)
 
     @staticmethod
     def get_task_prompt(task: Task) -> str:

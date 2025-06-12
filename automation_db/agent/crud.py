@@ -22,9 +22,19 @@ class AgentCRUD:
             toml.dump(data, f)
 
     @staticmethod
-    def read(role: str) -> Agent:
-        path = db_config.agent
-        data = toml.load(path.open())
+    def read_all() -> list[Agent]:
+        data = toml.load(db_config.agent.open())
+        return [
+            Agent(
+                role=agent_data['role'],
+                requirements=agent_data['requirements']
+            )
+            for agent_data in data['agent']
+        ]
+
+    @staticmethod
+    def read_by_role(role: str) -> Agent:
+        data = toml.load(db_config.agent.open())
         for agent_data in data['agent']:
             if agent_data['role'] == role:
                 return Agent(

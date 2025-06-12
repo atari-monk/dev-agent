@@ -28,7 +28,7 @@ class AutomationContext:
 
     @classmethod
     def _load_task(cls) -> bool:
-        task = TaskCRUD.read_pending()
+        task = TaskCRUD.read_by_status()
         if not task:
             return False
         else:
@@ -40,10 +40,10 @@ class AutomationContext:
         cls.project = ProjectCRUD.read()
         cls.code_style = CodeStyleCRUD.read()
         if not cls._load_task(): return False
-        cls.agent = AgentCRUD.read(cls.task.assigned_to)
-        cls.feature = FeatureCRUD.read(cls.task.feature)
-        cls.file = FileCRUD.read(cls.task.feature, cls.task.name)
-        cls.files = FileCRUD.read_list(cls.task.feature)
+        cls.agent = AgentCRUD.read_by_role(cls.task.assigned_to)
+        cls.feature = FeatureCRUD.read_by_name(cls.task.feature)
+        cls.file = FileCRUD.read_by_feature_and_task(cls.task.feature, cls.task.name)
+        cls.files = FileCRUD.read_many_by_feature(cls.task.feature)
         cls.path = cls.project.path / cls.file.path / cls.file.file_name
         cls.is_load = True
         return True

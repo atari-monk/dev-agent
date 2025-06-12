@@ -24,21 +24,21 @@ class FileCRUD:
             toml.dump(data, f)
 
     @staticmethod
-    def read(feature_name: str, task_name: str) -> File:
+    def read_all() -> List[File]:
         data = toml.load(db_config.file.open())
+        files: List[File] = []
         for file in data['file']:
-            if file['feature'] == feature_name and file['task'] == task_name:
-                return File(
-                    feature=file['feature'],
-                    task=file['task'],
-                    file_name=file['file_name'],
-                    class_name=file.get('class_name'),
-                    path=file['path']
-                )
-        raise ValueError(f"File with feature '{feature_name}' and task '{task_name}' not found")
+            files.append(File(
+                feature=file['feature'],
+                task=file['task'],
+                file_name=file['file_name'],
+                class_name=file.get('class_name'),
+                path=file['path']
+            ))
+        return files
     
     @staticmethod
-    def read_list(feature_name: str) -> List[File]:
+    def read_many_by_feature(feature_name: str) -> List[File]:
         data = toml.load(db_config.file.open())
         files: List[File] = []
         for file in data['file']:
@@ -52,6 +52,20 @@ class FileCRUD:
                 ))
         return files
     
+    @staticmethod
+    def read_by_feature_and_task(feature_name: str, task_name: str) -> File:
+        data = toml.load(db_config.file.open())
+        for file in data['file']:
+            if file['feature'] == feature_name and file['task'] == task_name:
+                return File(
+                    feature=file['feature'],
+                    task=file['task'],
+                    file_name=file['file_name'],
+                    class_name=file.get('class_name'),
+                    path=file['path']
+                )
+        raise ValueError(f"File with feature '{feature_name}' and task '{task_name}' not found")
+
     @staticmethod
     def update(feature_name: str, name: str, updates: dict[str, Any]) -> File:
         data = toml.load(db_config.file.open())
