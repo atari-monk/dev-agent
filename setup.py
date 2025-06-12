@@ -7,10 +7,8 @@ setup(
     install_requires=[],
     entry_points={
         "console_scripts": [
-            "chatgpt_agent=agents.chatgpt_agent:main",
-            "code_base_agent=agents.code_base_agent:main",
-            "generate_class_template=prompt_generators.generate_class_template:main",
-            "coder_agent_prompt_generator=prompt_generators.coder_agent_prompt_generator:main",
+            "automation_cli=automation_db.cli.main:main",
+            "automation_agent=agents.smoke.run_code_agent_on_toml:main"
         ],
     },
     python_requires=">=3.7",
