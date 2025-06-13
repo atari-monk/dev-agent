@@ -3,6 +3,7 @@ from typing import Optional
 
 @dataclass
 class File:
+    id: int
     feature: str
     task: str
     file_name: str

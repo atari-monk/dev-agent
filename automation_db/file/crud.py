@@ -29,6 +29,7 @@ class FileCRUD:
         files: List[File] = []
         for file in data['file']:
             files.append(File(
+                id = file['id'],
                 feature=file['feature'],
                 task=file['task'],
                 file_name=file['file_name'],
@@ -44,6 +45,7 @@ class FileCRUD:
         for file in data['file']:
             if file['feature'] == feature_name:
                 files.append(File(
+                    id = file['id'],
                     feature=file['feature'],
                     task=file['task'],
                     file_name=file['file_name'],
@@ -53,11 +55,29 @@ class FileCRUD:
         return files
     
     @staticmethod
+    def read_many_by_ids(ids: List[int]) -> List[File]:
+        items = toml.load(db_config.file.open())
+        ids_set = set(ids)
+        select_items: List[File] = []
+        for item in items['file']:
+            if item['id'] in ids_set:
+                select_items.append(File(
+                    id=item['id'],
+                    feature=item['feature'],
+                    task=item['task'],
+                    file_name=item['file_name'],
+                    class_name=item.get('class_name'),
+                    path=item['path']
+                ))
+        return select_items
+    
+    @staticmethod
     def read_by_feature_and_task(feature_name: str, task_name: str) -> File:
         data = toml.load(db_config.file.open())
         for file in data['file']:
             if file['feature'] == feature_name and file['task'] == task_name:
                 return File(
+                    id = file['id'],
                     feature=file['feature'],
                     task=file['task'],
                     file_name=file['file_name'],
@@ -77,6 +97,7 @@ class FileCRUD:
                 with db_config.file.open('w') as f:
                     toml.dump(data, f)
                 return File(
+                    id = file['id'],
                     feature=file['feature'],
                     task=file['task'],
                     file_name=file['file_name'],

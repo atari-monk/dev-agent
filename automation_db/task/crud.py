@@ -7,13 +7,13 @@ from automation_db.db.config import db_config
 class TaskCRUD:
     @staticmethod
     def create(task: Task) -> None:
-        data: dict[str, list[dict[str, object]]] = {'task': []}
+        items: dict[str, list[dict[str, object]]] = {'task': []}
         if db_config.task.exists():
-            data = toml.load(db_config.task.open())
-            if 'task' not in data:
-                data['task'] = []
+            items = toml.load(db_config.task.open())
+            if 'task' not in items:
+                items['task'] = []
         
-        data['task'].append({
+        items['task'].append({
             'feature': task.feature,
             'name': task.name,
             'requirements': task.requirements,
@@ -22,95 +22,99 @@ class TaskCRUD:
         })
         
         with db_config.task.open('w') as f:
-            toml.dump(data, f)
+            toml.dump(items, f)
 
     @staticmethod
     def read_all() -> list[Task]:
-        data = toml.load(db_config.task.open())
+        items = toml.load(db_config.task.open())
         return [
             Task(
-                feature=task_data['feature'],
-                name=task_data['name'],
-                requirements=task_data['requirements'],
-                assigned_to=task_data['assigned_to'],
-                status=task_data['status'])
-            for task_data in data['task']
+                feature=item['feature'],
+                name=item['name'],
+                requirements=item['requirements'],
+                assigned_to=item['assigned_to'],
+                files=item['files'],
+                status=item['status'])
+            for item in items['task']
         ]
     
     @staticmethod
     def read_by_feature_and_name(feature: str, name: str) -> Task:
-        data = toml.load(db_config.task.open())
-        for task_data in data['task']:
-            if task_data['feature'] == feature and task_data['name'] == name:
+        items = toml.load(db_config.task.open())
+        for item in items['task']:
+            if item['feature'] == feature and item['name'] == name:
                 return Task(
-                    feature=task_data['feature'],
-                    name=task_data['name'],
-                    requirements=task_data['requirements'],
-                    assigned_to=task_data['assigned_to'],
-                    status=task_data['status']
+                    feature=item['feature'],
+                    name=item['name'],
+                    requirements=item['requirements'],
+                    files=item['files'],
+                    assigned_to=item['assigned_to'],
+                    status=item['status']
                 )
         raise ValueError(f"Task with feature '{feature}' and name '{name}' not found")
 
     @staticmethod
     def read_by_status(status: str = 'pending') -> Task | None:
-        data = toml.load(db_config.task.open())
-        for task_data in data['task']:
-            if task_data['status'] == status:
+        items = toml.load(db_config.task.open())
+        for item in items['task']:
+            if item['status'] == status:
                 return Task(
-                    feature=task_data['feature'],
-                    name=task_data['name'],
-                    requirements=task_data['requirements'],
-                    assigned_to=task_data['assigned_to'],
-                    status=task_data['status']
+                    feature=item['feature'],
+                    name=item['name'],
+                    requirements=item['requirements'],
+                    files=item['files'],
+                    assigned_to=item['assigned_to'],
+                    status=item['status']
                 )
         return None
 
     @staticmethod
     def update(feature: str, name: str, updates: dict[str, Any]) -> Task:
-        data = toml.load(db_config.task.open())
-        for task_data in data['task']:
-            if task_data['feature'] == feature and task_data['name'] == name:
+        items = toml.load(db_config.task.open())
+        for item in items['task']:
+            if item['feature'] == feature and item['name'] == name:
                 for key, value in updates.items():
-                    if key in task_data:
-                        task_data[key] = value
+                    if key in item:
+                        item[key] = value
                 with db_config.task.open('w') as f:
-                    toml.dump(data, f)
+                    toml.dump(items, f)
                 return Task(
-                    feature=task_data['feature'],
-                    name=task_data['name'],
-                    requirements=task_data['requirements'],
-                    assigned_to=task_data['assigned_to'],
-                    status=task_data['status']
+                    feature=item['feature'],
+                    name=item['name'],
+                    requirements=item['requirements'],
+                    files=item['files'],
+                    assigned_to=item['assigned_to'],
+                    status=item['status']
                 )
         raise ValueError(f"Task with feature '{feature}' and name '{name}' not found")
 
     @staticmethod
     def remove(feature: str, name: str) -> None:
-        data = toml.load(db_config.task.open())
-        data['task'] = [task for task in data['task'] if not (task['feature'] == feature and task['name'] == name)]
+        items = toml.load(db_config.task.open())
+        items['task'] = [item for item in items['task'] if not (item['feature'] == feature and item['name'] == name)]
         with db_config.task.open('w') as f:
-            toml.dump(data, f)
+            toml.dump(items, f)
 
     @staticmethod
     def add_requirement(feature: str, name: str, requirement: str) -> Task:
-        current = TaskCRUD.read_by_feature_and_name(feature, name)
-        current.requirements.append(requirement)
-        updates = {'requirements': current.requirements}
+        item = TaskCRUD.read_by_feature_and_name(feature, name)
+        item.requirements.append(requirement)
+        updates = {'requirements': item.requirements}
         return TaskCRUD.update(feature, name, updates)
 
     @staticmethod
     def update_requirement(feature: str, name: str, old: str, new: str) -> Task:
-        current = TaskCRUD.read_by_feature_and_name(feature, name)
-        if old in current.requirements:
-            index = current.requirements.index(old)
-            current.requirements[index] = new
-        updates = {'requirements': current.requirements}
+        item = TaskCRUD.read_by_feature_and_name(feature, name)
+        if old in item.requirements:
+            index = item.requirements.index(old)
+            item.requirements[index] = new
+        updates = {'requirements': item.requirements}
         return TaskCRUD.update(feature, name, updates)
 
     @staticmethod
     def remove_requirement(feature: str, name: str, requirement: str) -> Task:
-        current = TaskCRUD.read_by_feature_and_name(feature, name)
-        if requirement in current.requirements:
-            current.requirements.remove(requirement)
-        updates = {'requirements': current.requirements}
+        item = TaskCRUD.read_by_feature_and_name(feature, name)
+        if requirement in item.requirements:
+            item.requirements.remove(requirement)
+        updates = {'requirements': item.requirements}
         return TaskCRUD.update(feature, name, updates)

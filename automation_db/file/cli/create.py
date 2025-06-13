@@ -9,6 +9,7 @@ from automation_db.file.model import File
 class CreateCommand(Command):
     @staticmethod
     def init_parser(parser: argparse.ArgumentParser) -> None:
+        parser.add_argument('id', help='Id')
         parser.add_argument('feature', help='Feature')
         parser.add_argument('task', help='Task')
         parser.add_argument('file_name', help='File name')
@@ -18,6 +19,7 @@ class CreateCommand(Command):
     @staticmethod
     def handle(args: argparse.Namespace) -> None:
         feature_file = File(
+            id=args.id,
             feature=args.feature,
             task=args.task,
             file_name=args.file_name,

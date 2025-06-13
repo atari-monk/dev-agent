@@ -12,10 +12,11 @@ class ReadByFeatureAndNameCommand(Command):
 
     @staticmethod
     def handle(args: argparse.Namespace) -> None:
-        task = TaskCRUD.read_by_feature_and_name(args.feature, args.name)
-        print(f"\nTask: {task.name}")
-        print(f"Status: {task.status}")
-        print(f"Assigned to: {task.assigned_to}")
-        print(f"Requirements: {', '.join(task.requirements)}")
-        print(f"Feature: {task.feature}")
+        item = TaskCRUD.read_by_feature_and_name(args.feature, args.name)
+        print(f"\nTask: {item.name}")
+        print(f"Status: {item.status}")
+        print(f"Assigned to: {item.assigned_to}")
+        print(f"Requirements: {', '.join(item.requirements)}")
+        print(f"Files: {', '.join(map(str, item.files))}")
+        print(f"Feature: {item.feature}")
         print()

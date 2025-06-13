@@ -65,18 +65,25 @@ class PromptGenerator:
     
     @staticmethod
     def get_file_context_prompt(project: Project, files: List[File]) -> str:
-        prompt: List[str] = []
+        if not files:
+            return ""  # Return empty string if no files provided
+        
+        file_sections: list[str] = []
+        
         for file in files:
             full_path = project.path / file.path / file.file_name
+            file_header = f"File: {full_path}"
+            
             if not full_path.exists():
-                prompt.append(f"File: {full_path} - NOT FOUND\n")
+                file_sections.append(f"{file_header} - NOT FOUND")
                 continue
                 
             try:
                 with open(full_path, 'r') as f:
-                    content = f.read()
-                    prompt.append(f"File: {full_path}\nContent:\n{content}\n")
+                    content = f.read().strip()
+                    file_sections.append(f"{file_header}\n{content}")
             except Exception as e:
-                prompt.append(f"File: {full_path} - ERROR READING FILE: {str(e)}\n")
+                file_sections.append(f"{file_header} - ERROR READING FILE: {str(e)}")
         
-        return "\n".join(prompt)
+        # Add the header and join all sections
+        return "Code Context:\n\n" + "\n\n".join(file_sections) + "\n"

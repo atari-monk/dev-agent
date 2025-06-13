@@ -13,6 +13,7 @@ class CreateCommand(Command):
         parser.add_argument('name', help='Task name')
         parser.add_argument('assigned_to', help='Task assigned to')
         parser.add_argument('--reqs', default=[], nargs='+', help='Task requirements (at least one required)')
+        parser.add_argument('--files', default=[], nargs='+', help='Files context')
         parser.add_argument('--status', default='pending', choices=['pending'], help='Initial status of the feature (default: %(default)s)')
 
     @staticmethod
@@ -21,6 +22,7 @@ class CreateCommand(Command):
             feature=args.feature,
             name=args.name,
             requirements=args.reqs,
+            files=args.files,
             assigned_to=args.assigned_to,
             status=args.status
         )

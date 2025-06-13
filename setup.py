@@ -8,6 +8,7 @@ setup(
     entry_points={
         "console_scripts": [
             "automation_cli=automation_db.cli.main:main",
+            "automation_prompt=automation_db.automation.model:main",
             "automation_agent=agents.smoke.run_code_agent_on_toml:main"
         ],
     },

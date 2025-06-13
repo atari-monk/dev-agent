@@ -22,4 +22,5 @@ class ReadAllCommand(Command):
             print(f"Path: {file.path}")
             print(f"Feature: {file.feature}")
             print(f"Task: {file.task}")
+            print(f"Id: {file.id}")
         print()
