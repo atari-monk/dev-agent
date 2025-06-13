@@ -6,7 +6,7 @@ from automation_db.cli.model_type import ModelType
 
 @dataclass(frozen=True)
 class DbConfig:
-    db_folder: Path = Path(r"C:\atari-monk\code\race-track-game\docs")
+    db_folder: Path = Path(r"C:\atari-monk\code\race-track-game\automation_db")
 
     project: Path = field(init=False)
     code_style: Path = field(init=False)
