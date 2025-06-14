@@ -17,6 +17,7 @@ class TaskCRUD:
             'feature': task.feature,
             'name': task.name,
             'requirements': task.requirements,
+            'files': task.files,
             'assigned_to': task.assigned_to,
             'status': task.status
         })
