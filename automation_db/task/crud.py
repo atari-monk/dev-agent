@@ -17,7 +17,8 @@ class TaskCRUD:
             'feature': task.feature,
             'name': task.name,
             'requirements': task.requirements,
-            'files': task.context_files,
+            'context_files': task.context_files,
+            'save_file': task.save_file,
             'assigned_to': task.assigned_to,
             'status': task.status
         })
@@ -34,7 +35,7 @@ class TaskCRUD:
                 name=item['name'],
                 requirements=item['requirements'],
                 assigned_to=item['assigned_to'],
-                context_files=item['files'],
+                context_files=item['context_files'],
                 save_file=item['save_file'],
                 status=item['status'])
             for item in items['task']
@@ -49,7 +50,7 @@ class TaskCRUD:
                     feature=item['feature'],
                     name=item['name'],
                     requirements=item['requirements'],
-                    context_files=item['files'],
+                    context_files=item['context_files'],
                     save_file=item['save_file'],
                     assigned_to=item['assigned_to'],
                     status=item['status']
@@ -65,7 +66,7 @@ class TaskCRUD:
                     feature=item['feature'],
                     name=item['name'],
                     requirements=item['requirements'],
-                    context_files=item['files'],
+                    context_files=item['context_files'],
                     save_file=item['save_file'],
                     assigned_to=item['assigned_to'],
                     status=item['status']
@@ -86,7 +87,7 @@ class TaskCRUD:
                     feature=item['feature'],
                     name=item['name'],
                     requirements=item['requirements'],
-                    context_files=item['files'],
+                    context_files=item['context_files'],
                     save_file=item['save_file'],
                     assigned_to=item['assigned_to'],
                     status=item['status']
