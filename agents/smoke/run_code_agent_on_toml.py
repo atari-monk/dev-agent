@@ -18,7 +18,8 @@ def get_code_task(prompt: str, path:Path):
         prompt=prompt,
         delay_seconds=40,
         output_path=path,
-        json_output=False)
+        json_output=False,
+        overwrite=True)
 
 def main():
     agent = CodeAgent(ChatGPTAgent())
