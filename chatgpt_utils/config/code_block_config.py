@@ -1,9 +1,6 @@
-from selenium import webdriver
-
-
-from dataclasses import dataclass
 from pathlib import Path
-
+from dataclasses import dataclass
+from selenium import webdriver
 
 @dataclass
 class CodeBlockConfig:

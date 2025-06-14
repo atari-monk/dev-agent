@@ -1,9 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from chatgpt_utils.chatgpt_config import ChatGPTConfig
+from chatgpt_utils.config.chatgpt_config import ChatGPTConfig
 from chrome_utils.chrome_profiles import get_chrome_profile
 from utils.valid_url import is_valid_url
-
 
 def open_chrome_with_profile(config: ChatGPTConfig) -> webdriver.Chrome | None:
     if not is_valid_url(config.page):

@@ -6,8 +6,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pyperclip
 import time
-from chatgpt_utils.code_block_config import CodeBlockConfig
-from chatgpt_utils.prompt_config import PromptConfig
+from chatgpt_utils.config.code_block_config import CodeBlockConfig
+from chatgpt_utils.config.prompt_config import PromptConfig
 from utils.json_utils import (
     append_json_strings_to_array,
     convert_paths_to_json_safe,

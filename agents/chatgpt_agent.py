@@ -1,13 +1,13 @@
 from pathlib import Path
 from agents.interface.ichatgpt_agent import IChatGPTAgent
-from chatgpt_utils.code_block_config import CodeBlockConfig
-from chatgpt_utils.prompt_config import PromptConfig
+from chatgpt_utils.config.code_block_config import CodeBlockConfig
+from chatgpt_utils.config.prompt_config import PromptConfig
 from chatgpt_utils.chatgpt_cli import (
     open_chatgpt_session,
     save_chatgpt_code_block,
     send_chatgpt_prompt,
 )
-from chatgpt_utils.chatgpt_config import ChatGPTConfig
+from chatgpt_utils.config.chatgpt_config import ChatGPTConfig
 
 class ChatGPTAgent(IChatGPTAgent):
     def __init__(self):

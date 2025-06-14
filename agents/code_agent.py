@@ -4,7 +4,6 @@ from agents.code_task import CodeTask
 from agents.interface.ichatgpt_agent import IChatGPTAgent
 from agents.interface.icode_agent import ICodeAgent
 
-
 class CodeAgent(ICodeAgent):
     def __init__(self, chatgpt_agent: IChatGPTAgent):
         self._agent = chatgpt_agent

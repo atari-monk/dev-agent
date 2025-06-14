@@ -1,8 +1,8 @@
 import time
 from colorama import Fore, Style
-from chatgpt_utils.code_block_config import CodeBlockConfig
-from chatgpt_utils.prompt_config import PromptConfig
-from chatgpt_utils.chatgpt_config import ChatGPTConfig
+from chatgpt_utils.config.code_block_config import CodeBlockConfig
+from chatgpt_utils.config.prompt_config import PromptConfig
+from chatgpt_utils.config.chatgpt_config import ChatGPTConfig
 from chatgpt_utils.chatgpt_automation import (
     save_code_block,
     send_prompt,
