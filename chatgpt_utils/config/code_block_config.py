@@ -6,7 +6,8 @@ from selenium import webdriver
 class CodeBlockConfig:
     driver: webdriver.Chrome
     output_file_path: Path
-    delay_seconds: int
     json: bool = False
     printResponse:bool=False
     overwrite:bool=False
+    use_delay=False
+    delay_seconds: int = 0

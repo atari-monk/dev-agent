@@ -10,12 +10,11 @@ class IChatGPTAgent(Protocol):
     def close(self) -> None:
         ...
 
-    def send_prompt(self, prompt: str, delay_seconds: int) -> None:
+    def send_prompt(self, prompt: str) -> None:
         ...
 
     def save_code(
         self,
-        output_file_path: Path,
-        delay_seconds: int
+        output_file_path: Path
     ) -> str | None:
         ...

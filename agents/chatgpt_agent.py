@@ -20,20 +20,19 @@ class ChatGPTAgent(IChatGPTAgent):
             ChatGPTConfig(
                 page="https://chat.openai.com/",
                 config_path=r"C:\atari-monk\code\apps-data-store\chrome_profiles.json",
-                detach=True,
-                delay_seconds=10))
+                detach=True))
 
     def close(self):
         if self.driver is not None:
             self.driver.quit()
             self.driver = None
 
-    def send_prompt(self, prompt:str, delay_seconds:int):
+    def send_prompt(self, prompt:str):
         if self.driver is None:
             raise Exception("ChatGPT session is not open.")
-        send_chatgpt_prompt(PromptConfig(driver=self.driver, prompt=prompt, delay_seconds=delay_seconds))
+        send_chatgpt_prompt(PromptConfig(driver=self.driver, prompt=prompt))
 
-    def save_code(self, output_file_path: Path, delay_seconds:int) -> str | None:
+    def save_code(self, output_file_path: Path) -> str | None:
         if self.driver is None:
             raise Exception("ChatGPT session is not open.")
-        return save_chatgpt_code_block(CodeBlockConfig(driver=self.driver, output_file_path=output_file_path, delay_seconds=delay_seconds, overwrite=True))
+        return save_chatgpt_code_block(CodeBlockConfig(driver=self.driver, output_file_path=output_file_path, overwrite=True))

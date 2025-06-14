@@ -27,13 +27,8 @@ def main():
         class_code = get_class_code(file_path)
         prompt = generate_template(class_code, file_path)
         c.send_prompt(prompt)
-        c.save_code(
-            output_path,
-            delay_seconds=3,
-            json=True,
-        )
+        c.save_code(output_path)
     c.close()
-
 
 if __name__ == "__main__":
     main()

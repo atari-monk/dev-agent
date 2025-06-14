@@ -9,8 +9,8 @@ class CodeAgent(ICodeAgent):
         self._agent = chatgpt_agent
 
     def execute(self, task: CodeTask) -> str | None:
-        self._agent.send_prompt(task.prompt, task.delay_seconds)
-        return self._agent.save_code(task.output_path, 2)
+        self._agent.send_prompt(task.prompt)
+        return self._agent.save_code(task.output_path)
 
     def batch_execute(self, tasks: List[CodeTask]) -> List[Optional[str]]:
         result: List[Optional[str]] = []

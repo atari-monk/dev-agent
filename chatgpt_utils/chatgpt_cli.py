@@ -12,26 +12,32 @@ from utils.colorama_utils import color_print
 from selenium import webdriver
 
 def open_chatgpt_session(config: ChatGPTConfig) -> webdriver.Chrome | None:
-    message = f"Initializing Chrome with profile... ({config.delay_seconds} seconds delay)\n"
-    color_print(message, Fore.RED, style=Style.BRIGHT)
-    driver = open_chrome_with_profile(config)
-    time.sleep(config.delay_seconds)
-    return driver
+    color_print(f"Initializing Chrome with profile...\n", Fore.RED, style=Style.BRIGHT)
+    return open_chrome_with_profile(config)
 
 def send_chatgpt_prompt(config: PromptConfig) -> None:
-    message = f"Sending Prompt... ({config.delay_seconds} seconds delay)\n"
-    color_print(message, Fore.RED, style=Style.BRIGHT)
+    color_print(f"Sending Prompt..\n", Fore.RED, style=Style.BRIGHT)
     if config.printPrompt:
         print(config.prompt)
-    send_prompt(config)
-    time.sleep(config.delay_seconds)
+    if config.use_delay:
+        print(f"delay of {config.delay_seconds}...")
+        time.sleep(config.delay_seconds)
+        send_prompt(config)
+    else:
+        input("Enter to send prompt...") 
+        send_prompt(config)
 
 def save_chatgpt_code_block(config: CodeBlockConfig):
-    message = f"Saving Response... ({config.delay_seconds} second delay)\n"
-    color_print(message, Fore.RED, style=Style.BRIGHT)
-    response = save_code_block(config)
+    color_print(f"Saving Response..\n", Fore.RED, style=Style.BRIGHT)
+    response = ''
+    if config.use_delay:
+        print(f"delay of {config.delay_seconds}...")
+        time.sleep(config.delay_seconds)
+        response = save_code_block(config)
+    else:
+        input("Enter to save...") 
+        response = save_code_block(config)
     if config.printResponse:
         print("Response:")
         print(response)
-    time.sleep(config.delay_seconds)
     return response
