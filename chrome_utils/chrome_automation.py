@@ -1,18 +1,15 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from chatgpt_utils.chatgpt_config import ChatGPTConfig
 from chrome_utils.chrome_profiles import get_chrome_profile
 from utils.valid_url import is_valid_url
 
 
-def open_chrome_with_profile(
-    website_url: str, 
-    config_Path: str, 
-    detach: bool = True
-) -> webdriver.Chrome | None:
-    if not is_valid_url(website_url):
-        raise ValueError(f"Invalid URL: '{website_url}'. Must include scheme (e.g., https://) and domain.")
+def open_chrome_with_profile(config: ChatGPTConfig) -> webdriver.Chrome | None:
+    if not is_valid_url(config.page):
+        raise ValueError(f"Invalid URL: '{config.page}'. Must include scheme (e.g., https://) and domain.")
     
-    if not (profile := get_chrome_profile(config_Path)):
+    if not (profile := get_chrome_profile(config.config_path)):
         print("No active Chrome profile found")
         return None
     
@@ -29,10 +26,10 @@ def open_chrome_with_profile(
     options.add_experimental_option("excludeSwitches", ["enable-automation"]) # type: ignore
     options.add_argument("--disable-blink-features=AutomationControlled") # type: ignore
 
-    if detach:
+    if config.detach:
         options.add_experimental_option("detach", True) # type: ignore
 
     driver = webdriver.Chrome(options=options)
-    driver.get(website_url)
-    print(f"Successfully opened: {website_url}")
+    driver.get(config.page)
+    print(f"Successfully opened: {config.page}")
     return driver

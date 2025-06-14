@@ -6,21 +6,23 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pyperclip
 import time
+from chatgpt_utils.code_block_config import CodeBlockConfig
+from chatgpt_utils.prompt_config import PromptConfig
 from utils.json_utils import (
     append_json_strings_to_array,
     convert_paths_to_json_safe,
 )
 from utils.string_utils import clean_code
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
-def send_prompt(driver: WebDriver, prompt: str, input_area_id: str = "prompt-textarea") -> bool:
+def send_prompt(config: PromptConfig) -> bool:
     try:
         import pyperclip
-        pyperclip.copy(prompt)
+        pyperclip.copy(config.prompt)
         
-        input_area = driver.find_element(By.ID, input_area_id)
+        driver = config.driver
+        input_area = driver.find_element(By.ID, config.input_area_id)
         input_area.clear()
 
         input_area.click()
@@ -54,25 +56,25 @@ def save_response(driver: webdriver.Chrome, output_file_path: Path=Path("respons
         return None
 
 
-def save_code_block(driver: webdriver.Chrome, output_file_path: Path, wait_time:int=60, json:bool=False, overwrite:bool=False):
+def save_code_block(config: CodeBlockConfig):
     try:
         copy_button_xpath = "(//button[contains(., 'Kopiuj')])[last()]"
-        copy_button = WebDriverWait(driver, wait_time).until(
+        copy_button = WebDriverWait(config.driver, config.delay_seconds).until(
             EC.element_to_be_clickable((By.XPATH, copy_button_xpath))
         )
 
-        driver.execute_script("arguments[0].click();", copy_button) # type: ignore
+        config.driver.execute_script("arguments[0].click();", copy_button) # type: ignore
         time.sleep(1)
 
         response = clean_code(pyperclip.paste())
 
-        if json:
+        if config.json:
             append_json_strings_to_array(
-                convert_paths_to_json_safe(response), output_file_path
+                convert_paths_to_json_safe(response), config.output_file_path
             )
         else:
-            mode = "w" if overwrite else "a"
-            with open(output_file_path, mode, encoding="utf-8") as f:
+            mode = "w" if config.overwrite else "a"
+            with open(config.output_file_path, mode, encoding="utf-8") as f:
                 f.write(response + "\n\n")
 
         return response

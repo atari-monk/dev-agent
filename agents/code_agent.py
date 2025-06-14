@@ -11,7 +11,7 @@ class CodeAgent(ICodeAgent):
 
     def execute(self, task: CodeTask) -> str | None:
         self._agent.send_prompt(task.prompt, task.delay_seconds)
-        return self._agent.save_code(task.output_path, json=task.json_output, overwrite=task.overwrite)
+        return self._agent.save_code(task.output_path, 2)
 
     def batch_execute(self, tasks: List[CodeTask]) -> List[Optional[str]]:
         result: List[Optional[str]] = []
