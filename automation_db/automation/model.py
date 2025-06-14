@@ -42,8 +42,8 @@ class AutomationContext:
         if not cls._load_task(): return False
         cls.agent = AgentCRUD.read_by_role(cls.task.assigned_to)
         cls.feature = FeatureCRUD.read_by_name(cls.task.feature)
-        cls.file = FileCRUD.read_by_feature_and_task(cls.task.feature, cls.task.name)
-        cls.files = FileCRUD.read_many_by_ids(cls.task.files)
+        cls.file = FileCRUD.read_by_id(cls.task.save_file)
+        cls.files = FileCRUD.read_many_by_ids(cls.task.context_files)
         cls.path = cls.project.path / cls.file.path / cls.file.file_name
         cls.is_load = True
         return True
@@ -58,7 +58,7 @@ class AutomationContext:
         prompt.append(PromptGenerator.get_code_style_prompt(cls.code_style))
         prompt.append(PromptGenerator.get_feature_prompt(cls.feature))
         prompt.append(PromptGenerator.get_agent_prompt(cls.agent))
-        #prompt.append(PromptGenerator.get_file_prompt(cls.file))
+        prompt.append(PromptGenerator.get_file_prompt(cls.file))
         prompt.append(PromptGenerator.get_task_prompt(cls.task))
         prompt.append(PromptGenerator.get_file_context_prompt(cls.project, cls.files))
         cls.prompt = '\n' + "\n\n".join(prompt)

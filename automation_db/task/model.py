@@ -6,7 +6,8 @@ class Task:
     feature: str
     name: str
     requirements: List[str]
-    files: List[int]
+    context_files: List[int]
+    save_file: int
     assigned_to: str
     status: str
 

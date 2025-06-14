@@ -17,6 +17,7 @@ class ReadByFeatureAndNameCommand(Command):
         print(f"Status: {item.status}")
         print(f"Assigned to: {item.assigned_to}")
         print(f"Requirements: {', '.join(item.requirements)}")
-        print(f"Files: {', '.join(map(str, item.files))}")
+        print(f"Files: {', '.join(map(str, item.context_files))}")
+        print(f"Save File: {item.save_file}")
         print(f"Feature: {item.feature}")
         print()

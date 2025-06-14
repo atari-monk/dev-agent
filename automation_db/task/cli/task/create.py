@@ -12,6 +12,11 @@ class CreateCommand(Command):
         parser.add_argument('feature', help='Task feature')
         parser.add_argument('name', help='Task name')
         parser.add_argument('assigned_to', help='Task assigned to')
+        parser.add_argument(
+            'save_file', 
+            type=int,
+            help='File to save to'
+        )
         parser.add_argument('--reqs', default=[], nargs='+', help='Task requirements (at least one required)')
         parser.add_argument(
             '--files', 
@@ -28,7 +33,8 @@ class CreateCommand(Command):
             feature=args.feature,
             name=args.name,
             requirements=args.reqs,
-            files=args.files,
+            context_files=args.files,
+            save_file=args.save_file,
             assigned_to=args.assigned_to,
             status=args.status
         )

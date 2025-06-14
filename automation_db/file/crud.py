@@ -25,6 +25,24 @@ class FileCRUD:
             toml.dump(items, f)
 
     @staticmethod
+    def read_by_id(id: int) -> File:
+        items = toml.load(db_config.file.open())
+        id_to_item = {item['id']: item for item in items['file']}
+        
+        if id not in id_to_item:
+            raise FileNotFoundError(f"No file found with ID {id}")
+        
+        item = id_to_item[id]
+        return File(
+            id=item['id'],
+            feature=item['feature'],
+            task=item['task'],
+            file_name=item['file_name'],
+            class_name=item.get('class_name'),
+            path=item['path']
+        )
+
+    @staticmethod
     def read_all() -> List[File]:
         file_items = toml.load(db_config.file.open())
         items: List[File] = []

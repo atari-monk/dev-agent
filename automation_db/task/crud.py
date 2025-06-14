@@ -17,7 +17,7 @@ class TaskCRUD:
             'feature': task.feature,
             'name': task.name,
             'requirements': task.requirements,
-            'files': task.files,
+            'files': task.context_files,
             'assigned_to': task.assigned_to,
             'status': task.status
         })
@@ -34,7 +34,8 @@ class TaskCRUD:
                 name=item['name'],
                 requirements=item['requirements'],
                 assigned_to=item['assigned_to'],
-                files=item['files'],
+                context_files=item['files'],
+                save_file=item['save_file'],
                 status=item['status'])
             for item in items['task']
         ]
@@ -48,7 +49,8 @@ class TaskCRUD:
                     feature=item['feature'],
                     name=item['name'],
                     requirements=item['requirements'],
-                    files=item['files'],
+                    context_files=item['files'],
+                    save_file=item['save_file'],
                     assigned_to=item['assigned_to'],
                     status=item['status']
                 )
@@ -63,7 +65,8 @@ class TaskCRUD:
                     feature=item['feature'],
                     name=item['name'],
                     requirements=item['requirements'],
-                    files=item['files'],
+                    context_files=item['files'],
+                    save_file=item['save_file'],
                     assigned_to=item['assigned_to'],
                     status=item['status']
                 )
@@ -83,7 +86,8 @@ class TaskCRUD:
                     feature=item['feature'],
                     name=item['name'],
                     requirements=item['requirements'],
-                    files=item['files'],
+                    context_files=item['files'],
+                    save_file=item['save_file'],
                     assigned_to=item['assigned_to'],
                     status=item['status']
                 )
